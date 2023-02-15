@@ -28,7 +28,8 @@ Route::get('/club', '\App\Http\Controllers\ClubController@list')->name('club.lis
 Route::get('/club/form/{id?}', '\App\Http\Controllers\ClubController@form')->name('club.form');
 Route::post('/club/save', '\App\Http\Controllers\ClubController@save')->name('club.save');
 Route::get('/club/delete/{id}', '\App\Http\Controllers\ClubController@delete')->name('club.delete');
-Route::get('/club/personnel/{id_club}', '\App\Http\Controllers\ClubController@personnels')->name('club.personnels');
+Route::get('/club/personnel/{id_club}', '\App\Http\Controllers\ClubController@personnels')->name('club.personnel.list');
+Route::any('/club/search', '\App\Http\Controllers\ClubController@search')->name('club.list.search');
 
 /*Association route*/
 Route::get('/association', '\App\Http\Controllers\AssociationController@list')->name('association.list');
@@ -50,7 +51,7 @@ Route::post('/personnel/save', '\App\Http\Controllers\PersonnelController@save')
 Route::post('/personnel/delete', '\App\Http\Controllers\PersonnelController@delete')->name('personnel.delete');
 Route::post('/personnel/licence/print', '\App\Http\Controllers\PersonnelController@print')->name('personnel.licence.print');
 Route::get('/personnel/doute/{nom_prenom}/{cin?}', '\App\Http\Controllers\PersonnelController@doute')->name('personnel.doute');
-Route::any('/personnel/search', '\App\Http\Controllers\PersonnelController@search')->name('personnel.search');
+Route::any('/personnel/search', '\App\Http\Controllers\PersonnelController@search')->name('personnel.list.search');
 
 Route::get('/statistique', '\App\Http\Controllers\ClubController@stats')->name('stat');
 

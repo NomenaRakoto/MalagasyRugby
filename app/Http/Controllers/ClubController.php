@@ -8,6 +8,7 @@ use App\Models\Section;
 use App\Models\Personnel;
 use App\Exports\StatsExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
 
 class ClubController extends Controller
 {
@@ -30,6 +31,17 @@ class ClubController extends Controller
         return view('personnel.list', [
             "personnels" => $persos,
             "club" => $club
+        ]);
+    }
+
+    public function search(Request $request){
+        $queries = $request->all();
+        $clubs = Club::where(DB::raw("LOWER(CONCAT(nom,responsable,contact,adresse,observation,mail_adresse, fb_adresse))"), 'LIKE', "%".strtolower($queries['query'])."%");
+        $clubs = $clubs->paginate(env('PAGINATION'));
+        $clubs->appends($queries['query']);
+        return view('club.list', [
+            "clubs" => $clubs,
+            "query" => $queries['query']
         ]);
     }
 
@@ -75,6 +87,6 @@ class ClubController extends Controller
 
     public function stats()
     {
-        return Excel::download(new StatsExport, "stats.xlsx");
+        return Excel::download(new StatsExport, "statistiques". time() .".xlsx");
     }
 }

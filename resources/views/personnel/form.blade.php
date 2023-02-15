@@ -24,7 +24,7 @@
                 Veuillez s'il vous plait verifier les informations saisies
               </div>
               @endif
-              <form method="POST" action="{{route('personnel.save')}}" enctype="multipart/form-data">
+              <form method="POST" action="{{route('personnel.save')}}@if($current_club)?current_club={{$current_club}}@endif" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 @if(isset($personnel)) <input type="hidden" name="id" value="{{$personnel->id}}"> @endif
                 <div class="row mb-3">
@@ -212,7 +212,7 @@
                    
 
                    <div class="col-md-3 mr-button mr-btn">
-                      <a href="{{route('personnel.list')}}">
+                      <a href="@if($current_club){{route('club.personnel.list', ['id_club' => $current_club])}}@else{{route('personnel.list')}}@endif">
                         <button class="btn btn-primary w-100" type="button"><i class="ri-close-circle-line"></i> Annuler</button>
                       </a>
                   </div>

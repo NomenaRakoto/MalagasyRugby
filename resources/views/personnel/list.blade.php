@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="pagetitle">
-  <h1>Personnels</h1>
+  <h1>Personnels @if(isset($club)) du club : {{$club->nom}}@endif</h1>
   <nav>
     <ol class="breadcrumb">
       <li class="breadcrumb-item">Personnels</li>
@@ -20,7 +20,7 @@
         <div class="card-body">
           <div class="row button-cont">
             <div class="col-md-2 mr-button mr-btn">
-              <a href="{{route('personnel.form')}}">
+              <a href="{{route('personnel.form')}}@if(isset($club))?id_club={{$club->id}}@endif">
                 <button class="btn btn-primary w-100" type="submit"><i class="ri-add-box-fill"></i> Nouveau</button>
               </a>
             </div>
@@ -97,7 +97,7 @@
                 <td>{{$personnel->passeport}}</td>
 
                 <td>
-                  <a href="{{route('personnel.form', ['id' => $personnel->id])}}" class="action-btn"><i class="ri-eye-fill"></i></a>
+                  <a href="{{route('personnel.form', ['id' => $personnel->id])}}@if(isset($club))?id_club={{$club->id}}@endif" class="action-btn"><i class="ri-eye-fill"></i></a>
                   <a data-id="{{$personnel->id}}" href="javascript:" class="action-btn lc-print"><i class="ri-printer-fill"></i></a>
                 </td>
               </tr>

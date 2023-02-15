@@ -1,20 +1,32 @@
 <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center rounded-circle">
+      <a href="/" class="logo d-flex align-items-center rounded-circle">
         <img src="/assets/img/malagasyrugby.jpg" alt="">
         <span class="d-none d-lg-block">MalagasyRugby</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
+    @if(strpos(\Route::currentRouteName(), 'personnel.list') !== false)
     <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="{{route('personnel.search')}}">
+      <form class="search-form d-flex align-items-center" method="POST" action="{{route('personnel.list.search')}}">
         {{ csrf_field() }}
         <input type="text" name="query" placeholder="Search" title="Enter search keyword" value="@if(isset($query)){{$query}}@endif">
         <button type="submit" title="Search"><i class="bi bi-search"></i></button>
       </form>
     </div><!-- End Search Bar -->
+    @endif
+
+    @if(strpos(\Route::currentRouteName(), 'club.list') !== false)
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="POST" action="{{route('club.list.search')}}">
+        {{ csrf_field() }}
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword" value="@if(isset($query)){{$query}}@endif">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div><!-- End Search Bar -->
+    @endif
 
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">

@@ -28,7 +28,7 @@ class PersonnelController extends Controller
 
     public function search(Request $request){
         $queries = $request->all();
-        $persos = Personnel::where(DB::raw("CONCAT(nom,prenom,cin,licence)"), 'LIKE', "%".strtolower($queries['query'])."%");
+        $persos = Personnel::where(DB::raw("LOWER(CONCAT(nom,prenom,cin,licence))"), 'LIKE', "%".strtolower($queries['query'])."%");
         $persos = $persos->paginate(env('PAGINATION'));
         $persos->appends($queries['query']);
         return view('personnel.list', [
@@ -58,8 +58,7 @@ class PersonnelController extends Controller
     }
 
     public function form($id = null){
-
-        $clubs = Club::orderBy('nom')->get();
+        $clubs = (isset($_GET['id_club']) && !$id) ? Club::where('id', $_GET['id_club'])->get() : Club::orderBy('nom')->get();
         $types = $this->getConfigData("type");
         $scats = $this->getConfigData("scat");
         $sexes = $this->getConfigData("sexe");
@@ -84,7 +83,8 @@ class PersonnelController extends Controller
              'positions_jeu' => $positions_jeu,
              'statuts_regle' => $statuts_regle,
              'statuts_citoyen' => $statuts_citoyen,
-             'niveau_equipes' => $niveau_equipes
+             'niveau_equipes' => $niveau_equipes,
+             'current_club' => (isset($_GET['id_club'])) ? $_GET['id_club'] : null
             ]);
 
         } else {
@@ -100,7 +100,8 @@ class PersonnelController extends Controller
              'statuts_citoyen' => $statuts_citoyen,
              'niveau_equipes' => $niveau_equipes,
              'last_cin' => intval($last_cin) + 1,
-             'licence' => intval($licence) + 1
+             'licence' => intval($licence) + 1,
+             'current_club' => (isset($_GET['id_club'])) ? $_GET['id_club'] : null
             ]);
         }
         
@@ -149,7 +150,7 @@ class PersonnelController extends Controller
             Personnel::create($personnelData);
         }
         
-        return redirect()->route('personnel.list');
+        return (isset($_GET['current_club'])) ? redirect()->route('club.personnel.list', ['id_club' => $club->id]) : redirect()->route('personnel.list');
     }
 
     private function getConfigData($table)

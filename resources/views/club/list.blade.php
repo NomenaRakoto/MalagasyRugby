@@ -56,14 +56,22 @@
                 <td>{{$club->observation}}</td>
                 <td>
                   <a href="{{route('club.form', ['id' => $club->id])}}" class="action-btn"><i class="ri-eye-fill"></i></a>
-                  <a target="__blank" href="{{route('club.personnels', ['id_club' => $club->id])}}" class="action-btn"><i class="bi bi-person-circle"></i></a>
+                  <a target="__blank" href="{{route('club.personnel.list', ['id_club' => $club->id])}}" class="action-btn"><i class="bi bi-person-circle"></i></a>
                 </td>
               </tr>
               @endforeach
             </tbody>
           </table>
           <!-- End Table with hoverable rows -->
-
+          <div class="row mb-3">
+            <div class="col-sm-10">
+            @if(isset($query))
+            {{ $clubs->appends(['query' => $query])->links() }}
+            @else
+            {{ $clubs->links() }}
+            @endif
+            </div>
+          </div>
         </div>
       </div>
 
