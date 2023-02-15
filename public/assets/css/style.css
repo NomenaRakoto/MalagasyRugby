@@ -1373,3 +1373,10 @@ tr.active
 .flex.justify-between.flex-1{
   display: none;
 }
+
+.total
+{
+  color: red;
+  display:  inline-block;
+  font-weight: bold;
+}

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="pagetitle">
-  <h1>Personnels @if(isset($club)) du club : {{$club->nom}}@endif</h1>
+  <h1>Personnels @if(isset($club)) du club : {{$club->nom}}@endif <span class="total">Global : {{$personnels->total()}}    @if(isset($male)) M : {{$male}} F : {{$female}} @endif</span></h1>
   <nav>
     <ol class="breadcrumb">
       <li class="breadcrumb-item">Personnels</li>

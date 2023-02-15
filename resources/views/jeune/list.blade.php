@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="pagetitle">
-  <h1>Jeunes</h1>
+  <h1>Jeunes <span class="total">Global : {{$jeunes->total()}}   @if(isset($male)) M : {{$male}} F : {{$female}} @endif</span></h1>
   <nav>
     <ol class="breadcrumb">
       <li class="breadcrumb-item">Jeunes</li>

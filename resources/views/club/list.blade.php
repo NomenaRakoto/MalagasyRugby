@@ -2,13 +2,14 @@
 
 @section('content')
 <div class="pagetitle">
-  <h1>Clubs</h1>
+  <h1>Clubs <span class="total">{{$clubs->total()}}</span></h1>
   <nav>
     <ol class="breadcrumb">
-      <li class="breadcrumb-item">Clubs</li>
+      <li class="breadcrumb-item">Clubs </li>
       <li class="breadcrumb-item active">Liste</li>
     </ol>
   </nav>
+
 </div><!-- End Page Title -->
 
 <section class="section">

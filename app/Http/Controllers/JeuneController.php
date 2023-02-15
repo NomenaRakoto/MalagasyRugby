@@ -21,8 +21,12 @@ class JeuneController extends Controller
     public function list(Request $request){
 
     	$jeunes = Jeune::paginate(env('PAGINATION')); 
+        $male = Jeune::where('id_sexe',2)->count();
+        $female = Jeune::where('id_sexe',1)->count();
     	return view('jeune.list', [
-    		"jeunes" => $jeunes
+    		"jeunes" => $jeunes,
+            "male" => $male,
+            "female" => $female
     	]);
     }
 

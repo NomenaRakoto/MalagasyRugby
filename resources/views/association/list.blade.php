@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="pagetitle">
-  <h1>Associations | Etablissements</h1>
+  <h1>Associations | Etablissements <span class="total">{{$associations->total()}}</span></h1>
   <nav>
     <ol class="breadcrumb">
       <li class="breadcrumb-item">Associations | Etablissements</li>

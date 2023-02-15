@@ -20,9 +20,12 @@ class PersonnelController extends Controller
     public function list(Request $request){
 
     	$persos = Personnel::paginate(1000); 
-
+        $male = Personnel::where('id_sexe',2)->count();
+        $female = Personnel::where('id_sexe',1)->count();
     	return view('personnel.list', [
-    		"personnels" => $persos
+    		"personnels" => $persos,
+            "male" => $male,
+            "female" => $female
     	]);
     }
 
