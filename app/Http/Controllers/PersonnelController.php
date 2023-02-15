@@ -19,7 +19,7 @@ class PersonnelController extends Controller
 
     public function list(Request $request){
 
-    	$persos = Personnel::paginate(env('PAGINATION')); 
+    	$persos = Personnel::paginate(1000); 
 
     	return view('personnel.list', [
     		"personnels" => $persos

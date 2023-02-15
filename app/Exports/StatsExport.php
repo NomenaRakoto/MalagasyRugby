@@ -25,8 +25,8 @@ class StatsExport implements FromArray
     		"", "",
     		"", ""],
 
-    		["Club","ETAT","MINIME U16","","CADET U18","","JUNIOR U20","","3e DIV","","2e DIV U16","","1er ELITE II","",
-    		"1er Div Regional","1er Div Federal", 
+    		["Club","ETAT","MINIME U15","","CADET U17","","JUNIOR U20","","3e DIV","","2e DIV U16","","D1 (F)","1er ELITE II","",
+    		"1er Div Regional","Federal 1", "Federal 2", 
     		"Niv I", "", "Niv II","", "Niv III","",/*Arbitre*/
     		"Niv I", "", "Niv II","", "Niv III","",/*Entraineur*/
     		"Niv I", "", "Niv II","", "Niv III","",/*Docteur*/
@@ -45,9 +45,11 @@ class StatsExport implements FromArray
     			"F","M",//junior u20
     			"F","M",//3e div
     			"F","M",//2e div
-    			"F","",//1er elite II
-    			"T",//1er Div Regional
-    			"T",//1er Div Federal
+    			"F",//D1 (F)
+    			"F","M",//1er elite II
+    			"M",//1er Div Regional
+    			"M",//1er Div Federal
+    			"M",//2e Div Federal
     			"F","M",//Arbitre niv I
     			"F","M",//Arbitre niv II
     			"F","M",//Arbitre Niv III
@@ -74,7 +76,7 @@ class StatsExport implements FromArray
     	foreach ($clubs as $key => $club) {
     		$row = [];
     		$row[] = $club->nom;
-    		$row[] = ($club->etat == "Actif") ? "A" : "I";
+    		$row[] = $club->actif == "Actif";
     		//Minime u16
     		$row[] = strval(Personnel::where("id_club", $club->id)->where('id_s_cat', 10)->where('id_sexe',1)->count());
     		$row[] = strval(Personnel::where("id_club", $club->id)->where('id_s_cat', 10)->where('id_sexe',2)->count());
@@ -93,7 +95,10 @@ class StatsExport implements FromArray
 
     		//2e Div
     		$row[] = strval(Personnel::where("id_club", $club->id)->where('id_s_cat', 5)->count());
-    		$row[] = strval(Personnel::where("id_club", $club->id)->where('id_s_cat', 8)->count());
+    		$row[] = strval(Personnel::where("id_club", $club->id)->where('id_s_cat', 8)->orWhere('id_s_cat', 4022)->count());
+
+    		//D1 F
+    		$row[] = strval(Personnel::where("id_club", $club->id)->where('id_s_cat', 2)->orWhere('id_s_cat', 7)->count());
 
     		//1er elite II
     		$row[] = strval(Personnel::where("id_club", $club->id)->where('id_s_cat', 4)->where('id_sexe',1)->count());
@@ -104,6 +109,8 @@ class StatsExport implements FromArray
 
     		//1er div Federal
     		$row[] = strval(Personnel::where("id_club", $club->id)->where('id_s_cat', 3)->count());
+    		//2e div Federal
+    		$row[] = strval(Personnel::where("id_club", $club->id)->where('id_s_cat', 3016)->count());
 
     		//Arbitre niv I
     		$row[] = strval(Personnel::where("id_club", $club->id)->where('id_s_cat', 12)->where('id_type', 2008)->where('id_sexe',1)->count());
@@ -116,7 +123,6 @@ class StatsExport implements FromArray
     		//Arbitre niv III
     		$row[] = strval(Personnel::where("id_club", $club->id)->where('id_s_cat', 14)->where('id_type', 2008)->where('id_sexe',1)->count());
     		$row[] = strval(Personnel::where("id_club", $club->id)->where('id_s_cat', 14)->where('id_type', 2008)->where('id_sexe',2)->count());
-
 
     		//Entraineur niv I
     		$row[] = strval(Personnel::where("id_club", $club->id)->where('id_s_cat', 12)->where('id_type', 2010)->where('id_sexe',1)->count());

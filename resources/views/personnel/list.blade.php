@@ -60,6 +60,17 @@
             </div>
           </div>
 
+          <!-- End Table with hoverable rows -->
+          <div class="row mb-3">
+            <div class="col-sm-10">
+            @if(isset($query))
+            {{ $personnels->appends(['query' => $query])->links() }}
+            @else
+            {{ $personnels->links() }}
+            @endif
+            </div>
+          </div>
+
           <!-- Table with hoverable rows -->
           <table class="table table-hover">
             <thead>
@@ -104,16 +115,7 @@
               @endforeach
             </tbody>
           </table>
-          <!-- End Table with hoverable rows -->
-          <div class="row mb-3">
-            <div class="col-sm-10">
-            @if(isset($query))
-            {{ $personnels->appends(['query' => $query])->links() }}
-            @else
-            {{ $personnels->links() }}
-            @endif
-            </div>
-          </div>
+          
           
         </div>
       </div>
