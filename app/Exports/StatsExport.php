@@ -76,7 +76,7 @@ class StatsExport implements FromArray
     	foreach ($clubs as $key => $club) {
     		$row = [];
     		$row[] = $club->nom;
-    		$row[] = $club->actif == "Actif";
+    		$row[] = $club->actif;
     		//Minime u16
     		$row[] = strval(Personnel::where("id_club", $club->id)->where('id_s_cat', 10)->where('id_sexe',1)->count());
     		$row[] = strval(Personnel::where("id_club", $club->id)->where('id_s_cat', 10)->where('id_sexe',2)->count());
