@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Personnel;
 use App\Models\Club;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class PersonnelController extends Controller
 {
@@ -30,14 +31,39 @@ class PersonnelController extends Controller
     }
 
     public function search(Request $request){
+
+        
         $queries = $request->all();
-        $persos = Personnel::where(DB::raw("LOWER(CONCAT(nom,prenom,cin,licence))"), 'LIKE', "%".strtolower($queries['query'])."%");
-        $persos = $persos->paginate(env('PAGINATION'));
-        $persos->appends($queries['query']);
-        return view('personnel.list', [
-            "personnels" => $persos,
-            "query" => $queries['query']
-        ]);
+        
+        if(isset($queries['query'])) {
+            $request->session()->put('queries', $request->all());
+            $queries = $request->session()->get('queries');
+        } else {
+            if($request->session()->has('queries')) {
+                $queries = $request->session()->get('queries');
+                
+            }
+            
+            else {
+                
+                return redirect(route('personnel.list'));
+            }
+                
+        }
+
+        if(!empty($queries) ) {
+            $persos = Personnel::where(DB::raw("LOWER(CONCAT(nom,prenom,cin,licence))"), 'LIKE', "%".strtolower($queries['query'])."%");
+            $persos = $persos->paginate(env('PAGINATION'));
+            $persos->appends($queries['query']);
+            return view('personnel.list', [
+                "personnels" => $persos,
+                "query" => $queries['query']
+            ]);
+        } else {
+            return redirect(route('personnel.list'));
+        }
+
+        
     }
 
     public function doute($nom_prenom, $cin = null){
@@ -56,12 +82,15 @@ class PersonnelController extends Controller
 
      public function print(Request $request){
             $persos = Personnel::whereIn('id', json_decode($request->personnels))->get();
+            /*$pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->setPaper('a4', 'landscape')->loadView('licence',  ["persos" => $persos]);
+              // download PDF file with download method
+            return $pdf->download('licence.pdf');*/
     		return view('licence', ["persos" => $persos]);
     	
     }
 
     public function form($id = null){
-        $clubs = (isset($_GET['id_club']) && !$id) ? Club::where('id', $_GET['id_club'])->get() : Club::orderBy('nom')->get();
+        $clubs =  Club::orderBy('nom')->get();
         $types = $this->getConfigData("type");
         $scats = $this->getConfigData("scat");
         $sexes = $this->getConfigData("sexe");
@@ -111,20 +140,31 @@ class PersonnelController extends Controller
     }
 
     public function save(Request $request){
-
-        $request->validate([
-            'nom' => 'required',
-            'date_naissance' => 'required|date',
-            'identification' => 'image',
-            'cin' => 'required|unique:personnel|max:12'
-        ]);
-
-        
+    
         $isUpdate = false;
         if(isset($request->id)) {
             $isUpdate = true;
             $personnel = Personnel::where('id', $request->id)->first();
         }
+        if($isUpdate) {
+
+             $request->validate([
+                'nom' => 'required',
+                'date_naissance' => 'required|date',
+                'identification' => 'image',
+                'cin' => 'required|unique:personnel,cin,'. $personnel->id .'|max:12'
+            ]);
+
+        } else {
+
+            $request->validate([
+                'nom' => 'required',
+                'date_naissance' => 'required|date',
+                'identification' => 'image',
+                'cin' => 'required|unique:personnel|max:12'
+            ]);
+        }
+        
 
         $personnelData = $request->all();
         unset($personnelData['_token']);
@@ -171,5 +211,12 @@ class PersonnelController extends Controller
         return DB::table('config')->where('varname', $varname)->update([
             'value' => $value
         ]);
+    }
+
+    public function delete(Request $request){
+        if(isset($request->personnels)) {
+            Personnel::whereIn('id', json_decode($request->personnels))->delete();
+        }
+        return redirect()->back();
     }
 }

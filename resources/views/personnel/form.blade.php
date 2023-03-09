@@ -111,7 +111,7 @@
                   <div class="col-sm-10">
                     <select class="selectpicker form-control rounded" aria-label="Selectionner Club" name='id_club'>
                       @foreach($clubs as $key => $club)
-                      <option @if($errors->any()) @if(old('club') == $club->id) selected @endif @else @if(isset($personnel) && $club->id==$personnel->club_id) selected @else @if($key==0) selected @endif @endif  @endif value="{{$club->id}}">{{$club->nom}}</option>
+                      <option @if($errors->any()) @if(old('club') == $club->id) selected @endif @else @if(isset($personnel) && $club->id==$personnel->club_id) selected @elseif($current_club && $club->id==$current_club) selected @else @if($key==0) selected @endif @endif  @endif value="{{$club->id}}">{{$club->nom}}</option>
                       @endforeach
                     </select>
                   </div>
@@ -189,7 +189,7 @@
                   <label for="inputText" class="col-sm-2 col-form-label">Nb match</label>
                   <div class="col-sm-10">
                     <input type="number" name="nb_match_last" class="form-control  @error('nb_match_last') is-invalid @enderror"
-                    @if($errors->any())  value="{{old('nb_match_last')}}" @else value="@if(isset($personnel)) {{$personnel->nb_match_last}} @else 0 @endif" @endif >
+                    @if($errors->any())  value="{{old('nb_match_last')}}" @else value="@if(isset($personnel)){{$personnel->nb_match_last}}@else 0 @endif" @endif >
                   </div>
                 </div>
 
