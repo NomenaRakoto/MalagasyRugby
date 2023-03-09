@@ -75,7 +75,10 @@
           <table class="table table-hover">
             <thead>
               <tr>
-                <th scope="col">#</th>
+                <th scope="col">
+                  #
+                  <input type="checkbox" id="check-select-all" class="unchecked" name="">
+                </th>
                 <th scope="col">Type</th>
                 <th scope="col">Nom</th>
                 <th scope="col">Prénom</th>
@@ -113,6 +116,7 @@
                 </td>
               </tr>
               @endforeach
+              <input type="hidden" id="all_id" value="{{json_encode($personnels->pluck('id')->toArray())}}" name="">
             </tbody>
           </table>
           
@@ -135,14 +139,29 @@
          $('#formLicence').submit();
       });
 
+      $('#check-select-all').on('click', function(){
+          if($(this).hasClass("unchecked")) {
+            $('.tr-licence').addClass('active');
+            $(".check-select").prop("checked", true);
+            $(this).removeClass('unchecked');
+            licences = $('#all_id').val().split(',');
+          } else {
+            $('.tr-licence').removeClass('active');
+            $(".check-select").prop("checked", false);
+            $(this).addClass('unchecked');
+            licences = [];
+          }
+          $('.licences').val(JSON.stringify(licences));
+      });
+
 
       $('.tr-licence').on('click', function(){
         if($(this).hasClass("active")) {
           $(this).removeClass('active');
           $(this).find(".check-select").prop("checked", false);
           var index = licences.indexOf($(this).attr("id"));
-          licences.splice(index, 1);
 
+          licences.splice(index, 1);
         } else {
           $(this).addClass('active');
           $(this).find(".check-select").prop("checked", true);
