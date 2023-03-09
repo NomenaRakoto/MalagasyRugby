@@ -18,7 +18,7 @@ class ClubController extends Controller
     //
     public function list(Request $request){
 
-    	$clubs = Club::paginate(env('PAGINATION')); 
+    	$clubs = Club::paginate(1000); 
     	return view('club.list', [
     		"clubs" => $clubs
     	]);
@@ -26,7 +26,7 @@ class ClubController extends Controller
 
     public function personnels($id_club){
 
-        $persos = Personnel::where('id_club', '=', $id_club)->paginate(env('PAGINATION')); 
+        $persos = Personnel::where('id_club', '=', $id_club)->paginate(1000); 
         $club = Club::where('id','=', $id_club)->first();
         return view('personnel.list', [
             "personnels" => $persos,
@@ -37,7 +37,7 @@ class ClubController extends Controller
     public function search(Request $request){
         $queries = $request->all();
         $clubs = Club::where(DB::raw("LOWER(CONCAT(nom,responsable,contact,adresse,observation,mail_adresse, fb_adresse))"), 'LIKE', "%".strtolower($queries['query'])."%");
-        $clubs = $clubs->paginate(env('PAGINATION'));
+        $clubs = $clubs->paginate(1000);
         $clubs->appends($queries['query']);
         return view('club.list', [
             "clubs" => $clubs,

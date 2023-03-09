@@ -20,7 +20,7 @@ class PersonnelController extends Controller
 
     public function list(Request $request){
 
-    	$persos = Personnel::paginate(env('PAGINATION')); 
+    	$persos = Personnel::paginate(1000); 
         $male = Personnel::where('id_sexe',2)->count();
         $female = Personnel::where('id_sexe',1)->count();
     	return view('personnel.list', [
@@ -53,7 +53,7 @@ class PersonnelController extends Controller
 
         if(!empty($queries) ) {
             $persos = Personnel::where(DB::raw("LOWER(CONCAT(nom,prenom,cin,licence))"), 'LIKE', "%".strtolower($queries['query'])."%");
-            $persos = $persos->paginate(env('PAGINATION'));
+            $persos = $persos->paginate(1000);
             $persos->appends($queries['query']);
             return view('personnel.list', [
                 "personnels" => $persos,
@@ -71,7 +71,7 @@ class PersonnelController extends Controller
             $nom_prenom = strtoupper($nom_prenom);
             $persos = Personnel::where(DB::raw("upper(CONCAT(nom,prenom))"), 'LIKE', "%".$nom_prenom."%")
                       ->orWhere('cin', 'LIKE', "%".$cin."%");
-            $persos = $persos->paginate(env('PAGINATION'));
+            $persos = $persos->paginate(1000);
             return view('personnel.list', [
                 "personnels" => $persos
             ]);

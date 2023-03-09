@@ -140,7 +140,7 @@
       });
 
       $('#check-select-all').on('click', function(){
-          if($(this).hasClass("unchecked")) {
+          if($(this).is(':checked')) {
             $('.tr-licence').addClass('active');
             $(".check-select").prop("checked", true);
             $(this).removeClass('unchecked');
