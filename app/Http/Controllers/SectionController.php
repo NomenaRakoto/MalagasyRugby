@@ -62,7 +62,8 @@ class SectionController extends Controller
     		$sectionData['logo'] = $imageName;
 
     		if($isUpdate && $section->logo != 'defaultlogosection.jpg') {
-    			unlink(self::SECTION_IMG_PATH . $section->logo);
+                if(file_exists(self::SECTION_IMG_PATH . $section->logo))
+    			     unlink(self::SECTION_IMG_PATH . $section->logo);
     		}
     	} else {
     		if(!$isUpdate)

@@ -10,9 +10,12 @@
 
     @if(strpos(\Route::currentRouteName(), 'personnel.list') !== false)
     <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="{{route('personnel.list.search')}}">
+      <form class="search-form d-flex align-items-center" method="POST" action="{{route('personnel.list.search')}}@if(isset($club))?id_club={{$club->id}}@endif">
         {{ csrf_field() }}
         <input type="text" name="query" placeholder="Search" title="Enter search keyword" value="@if(isset($query)){{$query}}@endif">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+
+        <input class='ipt-search' type="text" name="saison" placeholder="Saison" title="Enter saison" value="@if(isset($saison)){{$saison}}@endif">
         <button type="submit" title="Search"><i class="bi bi-search"></i></button>
       </form>
     </div><!-- End Search Bar -->

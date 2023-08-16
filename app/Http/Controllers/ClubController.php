@@ -36,9 +36,10 @@ class ClubController extends Controller
 
     public function search(Request $request){
         $queries = $request->all();
-        $clubs = Club::where(DB::raw("LOWER(CONCAT(nom,responsable,contact,adresse,observation,mail_adresse, fb_adresse))"), 'LIKE', "%".strtolower($queries['query'])."%");
+        $clubs = Club::where(DB::raw("LOWER(CONCAT(coalesce(nom,''),coalesce(responsable,''),coalesce(contact,''),coalesce(adresse,''),coalesce(observation,''),coalesce(mail_adresse,''),coalesce(fb_adresse,'')))"), 'LIKE', "%".strtolower($queries['query'])."%");
         $clubs = $clubs->paginate(1000);
         $clubs->appends($queries['query']);
+
         return view('club.list', [
             "clubs" => $clubs,
             "query" => $queries['query']

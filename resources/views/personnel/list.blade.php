@@ -31,6 +31,15 @@
                   <button class="btn btn-primary w-100" type="submit"><i class="ri-printer-fill"></i> Licence</button>
               </form>
             </div>
+
+            <div class="col-md-2 mr-button mr-btn">
+              <form method="post" id="formLicence" action="{{route('personnel.licence.print')}}">
+                  {{ csrf_field() }}
+                  <input class="licences" type="hidden" name="personnels" value="[]">
+                  <button class="btn btn-primary w-100" type="submit"><i class="ri-file-excel-2-fill"></i> Exporter</button>
+              </form>
+            </div>
+
             <div class="col-md-2 mr-btn">
                   <button class="btn btn-danger w-100" type="button" data-bs-toggle="modal" data-bs-target="#verticalycentered"><i class="ri-delete-bin-2-fill"></i> Supprimer</button>
                   <div class="modal fade" id="verticalycentered" tabindex="-1">
@@ -58,6 +67,7 @@
                     </div>
                   </div>
             </div>
+            
           </div>
 
           <!-- End Table with hoverable rows -->
@@ -89,6 +99,7 @@
                 <th scope="col">Sous-Categorie</th>
                 <th scope="col">Licence</th>
                 <th scope="col">Passeport</th>
+                <th scope="col">validite</th>
                 <th scope="col"></th>
               </tr>
             </thead>
@@ -109,6 +120,7 @@
                 <td>@if($personnel->scat){{$personnel->scat->designation}}@endif</td>
                 <td>{{$personnel->perso_licence()}}</td>
                 <td>{{$personnel->passeport}}</td>
+                <td>{{$personnel->annee_validite}}</td>
 
                 <td>
                   <a href="{{route('personnel.form', ['id' => $personnel->id])}}@if(isset($club))?id_club={{$club->id}}@endif" class="action-btn"><i class="ri-eye-fill"></i></a>

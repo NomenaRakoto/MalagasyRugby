@@ -85,7 +85,7 @@ class JeuneController extends Controller
             $jeuneData['photo'] = $imageName;
 
             if($isUpdate && $jeune->photo != 'pdp.jpg' && !empty($jeune->photo)) {
-                unlink(self::JEUNE_IMG_PATH . $jeune->logo);
+                unlink(self::JEUNE_IMG_PATH . $jeune->photo);
             }
         } else {
             if(!$isUpdate)
@@ -117,6 +117,5 @@ class JeuneController extends Controller
     public function print(Request $request){
             $jeunes = Jeune::whereIn('id', json_decode($request->jeunes))->get();
     		return view('licence', ["jeunes" => $jeunes]);
-    	
     }
 }

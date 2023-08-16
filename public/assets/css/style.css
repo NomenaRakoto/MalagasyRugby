@@ -1380,3 +1380,7 @@ tr.active
   display:  inline-block;
   font-weight: bold;
 }
+
+.ipt-search {
+  margin-left: 20px;
+}

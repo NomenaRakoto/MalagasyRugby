@@ -111,7 +111,7 @@
                   <div class="col-sm-10">
                     <select class="selectpicker form-control rounded" aria-label="Selectionner Club" name='id_club'>
                       @foreach($clubs as $key => $club)
-                      <option @if($errors->any()) @if(old('club') == $club->id) selected @endif @else @if(isset($personnel) && $club->id==$personnel->club_id) selected @elseif($current_club && $club->id==$current_club) selected @else @if($key==0) selected @endif @endif  @endif value="{{$club->id}}">{{$club->nom}}</option>
+                      <option @if($errors->any()) @if(old('club') == $club->id) selected @endif @else @if(isset($personnel) && $club->id==$personnel->id_club) selected  @elseif($current_club && $club->id==$current_club) selected @elseif($key==0) selected @endif  @endif value="{{$club->id}}">{{$club->nom}}</option>
                       @endforeach
                     </select>
                   </div>
@@ -192,6 +192,74 @@
                     @if($errors->any())  value="{{old('nb_match_last')}}" @else value="@if(isset($personnel)){{$personnel->nb_match_last}}@else 0 @endif" @endif >
                   </div>
                 </div>
+                <div class="row mb-3">
+                  <label for="inputText" class="col-sm-2 col-form-label">Poids</label>
+                  <div class="col-sm-10">
+                    <input type="number" step="any" name="poids" class="form-control  @error('poids') is-invalid @enderror"
+                    @if($errors->any())  value="{{old('poids')}}" @else value="@if(isset($personnel)){{$personnel->poids}}@endif" @endif >
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label for="inputText" class="col-sm-2 col-form-label">Taille</label>
+                  <div class="col-sm-10">
+                    <input type="number" step="any" name="taille" class="form-control  @error('taille') is-invalid @enderror"
+                    @if($errors->any())  value="{{old('taille')}}" @else value="@if(isset($personnel)){{$personnel->taille}}@endif" @endif >
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label for="inputText" class="col-sm-2 col-form-label">Carton rouge</label>
+                  <div class="col-sm-10">
+                    <input type="number" name="carton_rouge" class="form-control  @error('carton_rouge') is-invalid @enderror"
+                    @if($errors->any())  value="{{old('carton_rouge')}}" @else value="@if(isset($personnel)){{$personnel->carton_rouge}}@endif" @endif >
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label for="inputText" class="col-sm-2 col-form-label">Carton jaune</label>
+                  <div class="col-sm-10">
+                    <input type="number" name="carton_jaune" class="form-control  @error('carton_jaune') is-invalid @enderror"
+                    @if($errors->any())  value="{{old('carton_jaune')}}" @else value="@if(isset($personnel)){{$personnel->carton_jaune}}@endif" @endif >
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label class="col-sm-2 col-form-label">Sélection dans l'equipe nationale</label>
+                  <div class="col-sm-10">
+                    <select class="form-select" aria-label="Type de Sélection" name='selection_id'>
+                      @foreach($selections as $key => $selection)
+                      <option @if($errors->any()) @if(old('id_selection') == $selection->id) selected @endif @else @if(isset($personnel) && $selection->id==$personnel->selection->id) selected @else @if($key==0) selected @endif @endif  @endif value="{{$selection->id}}">{{$selection->designation}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label for="inputText" class="col-sm-2 col-form-label">Année de sélection</label>
+                  <div class="col-sm-10">
+                    <input type="number" name="annee_selection" class="form-control  @error('annee_selection') is-invalid @enderror"
+                    @if($errors->any())  value="{{old('annee_selection')}}" @else value="@if(isset($personnel)){{$personnel->annee_selection}}@endif" @endif >
+                  </div>
+                </div>
+                 <div class="row mb-3">
+                  <label for="inputText" class="col-sm-2 col-form-label">Validite</label>
+                  <div class="col-sm-10">
+                    <input type="number" name="annee_validite" class="form-control  @error('nb_match_last') is-invalid @enderror"
+                    @if($errors->any())  value="{{old('annee_validite')}}" @else value="@if(isset($personnel)){{$personnel->annee_validite}}@else{{'2023'}}@endif" @endif >
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label for="inputText" class="col-sm-2 col-form-label">Téléphone</label>
+                  <div class="col-sm-10">
+                    <input type="text" id="telephone" name="telephone" class="form-control  @error('telephone') is-invalid @enderror"
+                    @if($errors->any())  value="{{old('telephone')}}" @else value="@if(isset($personnel)) {{$personnel->telephone}} @endif" @endif  required>
+                    @error('telephone')
+                    <div class="danger inp-error text-danger">{{$message}}</div>
+                    @enderror
+                  </div>
+                </div>
 
                 <div class="form-floating mb-3">
                     <textarea class="form-control textarea" name="observation" placeholder="Votre Observation" id="floatingTextarea">@if(isset($personnel)) {{$personnel->observation}} @endif</textarea>
@@ -236,7 +304,7 @@
                       </div>
                       <div class="modal-footer">
                         
-                        <form method="post" id="formDelete" action="{{route('personnel.delete')}}">
+                        <form method="post" id="formDelete" action="{{route('personnel.delete')}}@if($current_club)?current_club={{$current_club}}@endif">
                           {{ csrf_field() }}
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
                           <input id="licences" type="hidden" name="personnels" value="[{{$personnel->id}}]">

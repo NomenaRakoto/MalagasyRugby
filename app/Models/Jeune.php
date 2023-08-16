@@ -12,6 +12,8 @@ class Jeune extends Model
     protected $table = 'jeunes';
     public $timestamps = false;
 
+    const JEUNE_CODAGE = 90;
+
     protected $fillable = [
         'nom',
         'prenom',
@@ -42,6 +44,16 @@ class Jeune extends Model
 
     public function categorie() {
         return $this->hasOne(Categorie::class, 'id', 'id_categorie');
+    }
+
+    public function perso_licence()
+    {
+        $licence = '';
+        if($this->association && $this->association->region) $licence.=$this->association->region->id_ligue;
+        $licence.=$this->id_association;
+        $licence.=self::JEUNE_CODAGE;
+        $licence.=$this->id;
+        return $licence;
     }
 
 

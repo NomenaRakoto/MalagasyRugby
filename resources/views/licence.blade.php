@@ -182,6 +182,168 @@
                               </div>
                               @endforeach
                               @endif
+
+
+                              @if(isset($jeunes))
+                              @foreach($jeunes as $key => $perso)
+                              <div class="lc-div">
+                                <table width="519" cellspacing="0" cellpadding="0" border="1" class="licence @if($key%2 == 0) impaire @endif">
+                                    <tbody>
+                                        <tr class="head bord-top bord-left bord-right">
+                                            <td width="81" valign="top" class="img-head td-logo ">
+                                                <div>
+                                                    <img
+                                                        src="/assets/img/qrcode.png"
+                                                        alt="SectionLogo"
+                                                    />
+                                                </div>
+                                            </td>
+                                            <td colspan="7" width="357" valign="top" class="lc-title center no-left">
+                                                <div>
+                                                    <img
+                                                        src="/assets/img/title_fmr.png"
+                                                        width="400"
+                                                        height="72"
+                                                    />
+                                                </div>
+                                            </td>
+                                            <td width="81" valign="top" class="img-head td-logo no-left">
+                                                <div>
+                                                    
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="bord-bottom tr-info">
+                                            <td class="no-top" colspan="9" width="519" valign="top">
+                                                <div>
+                                                    <span class="txt-info">LIGUE : @if($perso->association &&  $perso->association->region ) {{Str::limit($perso->association->region->nom, 75)}}@endif</span> 
+                                                   
+                                                    <span class="txt-info num_licence">N° LICENCE : <strong>{{$perso->perso_licence()}}</strong></span>
+                                                </div>
+                                                <div>
+                                                    @if($perso->association)
+                                                    <span class="txt-info">{{strtoupper($perso->association->type)}} : {{Str::limit($perso->association->nom, 75)}}</span>
+                                                    @endif
+                                                </div>
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr class="bord-bottom td-title">
+                                            <td class="s-title no-top" colspan="2" width="223" valign="center">
+                                                <div align="center">
+                                                    <strong>INFO-PERSO</strong>
+                                                </div>
+                                            </td>
+                                            <td class="s-title center no-top no-left" colspan="2" width="223" valign="center">
+                                                <div align="center">
+                                                    2023
+                                                </div>
+                                            </td>
+                                            <td class="s-title no-top no-left" colspan="6" width="223" valign="center">
+                                                <div>
+                                                    IMPRESSION : {{date("m/d/Y")}}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="bord-bottom">
+                                            <td class="bord-right td-img no-top photo-td"  >
+                                                    <img class="img-lc" 
+                                                        src="/assets/img/app/jeunes/{{$perso->photo}}"
+                                                        alt="Title: ImageLicence"
+                                                    />
+
+                                                    <img class="rugbyLogo" 
+                                                        src="/assets/img/malagasyrugby.png"
+                                                        alt="rugbyLogo"
+                                                    />
+                                            </td>
+                                            <td class="no-top no-left" colspan="8" valign="top">
+                                                <div class="div-inline">
+                                                   <div>
+                                                    <span class="info-perso">NOM : {{Str::limit($perso->nom, 75)}}</span>
+                                                  </div>
+                                                  <div>
+                                                      <span class="info-perso">Né(e) le : {{$perso->date_naissance}}</span>
+                                                  </div>
+                                                  <div>
+                                                      <span class="info-perso">TYPE : Enfant </span>
+                                                  </div>
+                                                  <div>
+                                                      <span class="info-perso">Père : {{$perso->pere}}</span>
+                                                  </div>
+                                                  
+                                                </div>
+                                                <div class="div-inline">
+                                                  <div>
+                                                      <span class="info-perso">PRENOMS : {{ Str::limit($perso->prenom, 75) }}</span>
+                                                  </div>
+                                                  <div>
+                                                      <span class="info-perso">Niveau d'étude : {{ Str::limit($perso->etude->designation, 75) }}</span>
+                                                  </div>
+                                                  <div> 
+                                                      <span class="info-perso">SEXE : {{$perso->sexe->designation}}</span>
+                                                  </div>
+                                                  <div>
+                                                      <span class="info-perso">Mère : {{$perso->mere}}</span>
+                                                  </div>
+                                                </div>
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr class="bord-bottom lc-txt">
+                                            <td class="bord-right no-top" colspan="7" width="403" valign="top">
+                                                <div class="txt" align="center">
+                                                    Ny tompon’ny kara-pilalaovana dia tsy
+                                                    maintsy manaja manontolo ny rafitra mifehy
+                                                    ny Malagasy Rugby. Tsy maintsy mahalala ny
+                                                    amin’ny antsipirihany izay voalazan’ny
+                                                    fiantohana
+                                                </div>
+                                            </td>
+                                            <td class="center no-top no-left" colspan="2" width="116" valign="top">
+                                                <div align="center">
+                                                    <strong>
+                                                        <em><u>Sonian’ny tompony</u></em>
+                                                    </strong>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="center" height="80px">
+                                            <td class="no-top" colspan="2" width="111" valign="top">
+                                                <div>
+                                                    <strong>
+                                                        <em><u>VISA ASSURANCE</u></em>
+                                                    </strong>
+                                                </div>
+                                            </td>
+                                            <td class="bord-left no-top no-left" colspan="1" width="136" valign="top">
+                                                <div>
+                                                    <strong>
+                                                        <em><u> VISA MEDECIN</u></em>
+                                                    </strong>
+                                                </div>
+                                            </td>
+                                            <td class="bord-left no-top no-left" colspan="2" width="137" valign="top">
+                                                <div align="center">
+                                                    <strong>
+                                                        <em><u>VISA SECTION/LIGUE</u></em>
+                                                    </strong>
+                                                </div>
+                                            </td>
+                                            <td class="bord-left no-top no-left" colspan="4" width="136" valign="top">
+                                                <div align="center">
+                                                    <strong>
+                                                        <em><u>VISA FEDERATION</u></em>
+                                                    </strong>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
+                              </div>
+                              @endforeach
+                              @endif
                           </div>
 
 

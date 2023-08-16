@@ -33,7 +33,14 @@ class Personnel extends Model
         'nb_match_last',
         'id_niveau_equipe',
         'passeport',
-        'actif'
+        'actif',
+        'taille',
+        'poids',
+        'carton_rouge',
+        'carton_jaune',
+        'selection_id',
+        'annee_selection',
+        'telephone'
     ];
 
     protected $primaryKey = 'id';
@@ -83,5 +90,9 @@ class Personnel extends Model
     	if($this->type) $licence.=$this->type->codage;
     	$licence.=$this->licence;
     	return $licence;
+    }
+
+    public function selection() {
+        return $this->hasOne(SelectionType::class, 'id', 'selection_id');
     }
 }

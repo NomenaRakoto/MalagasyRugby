@@ -35,7 +35,7 @@ class PersonnelController extends Controller
         
         $queries = $request->all();
         
-        if(isset($queries['query'])) {
+        if(isset($queries['query']) || isset($queries['saison'])) {
             $request->session()->put('queries', $request->all());
             $queries = $request->session()->get('queries');
         } else {
@@ -51,13 +51,25 @@ class PersonnelController extends Controller
                 
         }
 
+       
         if(!empty($queries) ) {
-            $persos = Personnel::where(DB::raw("LOWER(CONCAT(nom,prenom,cin,licence))"), 'LIKE', "%".strtolower($queries['query'])."%");
+            $persos = new Personnel;
+            if(!empty($queries['query'])) {
+                $persos = $persos->where(DB::raw("LOWER(CONCAT(coalesce(nom,''),coalesce(prenom,''),coalesce(cin,''),coalesce(licence,'')))"), 'LIKE', "%".strtolower($queries['query'])."%");
+            }
+
+
+            if(!empty($queries['saison'])) {
+
+                $persos = $persos->where('annee_validite', '=', trim($queries['saison']));
+            }
             $persos = $persos->paginate(1000);
             $persos->appends($queries['query']);
             return view('personnel.list', [
                 "personnels" => $persos,
-                "query" => $queries['query']
+                "query" => (isset($queries['query'])) ? $queries['query'] : '',
+                'club' => (isset($_GET['id_club'])) ? Club::where('id','=',  $_GET['id_club'])->first() : null,
+                'saison' => (isset($queries['saison'])) ? $queries['saison'] : ''
             ]);
         } else {
             return redirect(route('personnel.list'));
@@ -94,6 +106,7 @@ class PersonnelController extends Controller
         $types = $this->getConfigData("type");
         $scats = $this->getConfigData("scat");
         $sexes = $this->getConfigData("sexe");
+        $selections = $this->getConfigData("selection_type");
         $formats_jeu = $this->getConfigData("format_jeu");
         $positions_jeu = $this->getConfigData("position_jeu");
         $statuts_regle = $this->getConfigData("statut_regle");
@@ -104,6 +117,7 @@ class PersonnelController extends Controller
 
         if($id) {
             $personnel = Personnel::where('id', $id)->first();
+           
             return view('personnel.form', 
             [
              'personnel' => $personnel,
@@ -116,7 +130,8 @@ class PersonnelController extends Controller
              'statuts_regle' => $statuts_regle,
              'statuts_citoyen' => $statuts_citoyen,
              'niveau_equipes' => $niveau_equipes,
-             'current_club' => (isset($_GET['id_club'])) ? $_GET['id_club'] : null
+             'current_club' => (isset($_GET['id_club'])) ? $_GET['id_club'] : null,
+             'selections' => $selections
             ]);
 
         } else {
@@ -133,7 +148,8 @@ class PersonnelController extends Controller
              'niveau_equipes' => $niveau_equipes,
              'last_cin' => intval($last_cin) + 1,
              'licence' => intval($licence) + 1,
-             'current_club' => (isset($_GET['id_club'])) ? $_GET['id_club'] : null
+             'current_club' => (isset($_GET['id_club'])) ? $_GET['id_club'] : null,
+             'selections' => $selections
             ]);
         }
         
@@ -176,7 +192,8 @@ class PersonnelController extends Controller
             $personnelData['identification'] = $imageName;
 
             if($isUpdate && $personnel->identification != 'pdp.jpg' && !empty($personnel->identification)) {
-                unlink(self::PERSO_IMG_PATH . $personnel->logo);
+                if(file_exists(self::PERSO_IMG_PATH . $personnel->identification))
+                    unlink(self::PERSO_IMG_PATH . $personnel->identification);
             }
         } else {
             if(!$isUpdate)
@@ -193,7 +210,7 @@ class PersonnelController extends Controller
             Personnel::create($personnelData);
         }
         
-        return (isset($_GET['current_club'])) ? redirect()->route('club.personnel.list', ['id_club' => $club->id]) : redirect()->route('personnel.list');
+        return (isset($_GET['current_club'])) ? redirect()->route('club.personnel.list', ['id_club' => $_GET['current_club']]) : redirect()->route('personnel.list');
     }
 
     private function getConfigData($table)
@@ -217,6 +234,6 @@ class PersonnelController extends Controller
         if(isset($request->personnels)) {
             Personnel::whereIn('id', json_decode($request->personnels))->delete();
         }
-        return redirect()->back();
+        return (isset($_GET['current_club'])) ? redirect()->route('club.personnel.list', ['id_club' => $_GET['current_club']]) : redirect()->route('personnel.list');
     }
 }
