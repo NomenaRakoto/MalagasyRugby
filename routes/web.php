@@ -54,11 +54,28 @@ Route::get('/personnel/doute/{nom_prenom}/{cin?}', '\App\Http\Controllers\Person
 Route::any('/personnel/search', '\App\Http\Controllers\PersonnelController@search')->name('personnel.list.search');
 
 Route::get('/statistique', '\App\Http\Controllers\ClubController@stats')->name('stat');
+Route::post('/personnel/scat', '\App\Http\Controllers\PersonnelController@checkScat')->name('personnel.scat');
 
 /*Authentication*/
 Route::get('/login', '\App\Http\Controllers\UserController@login')->name('login');
 Route::get('/logout', '\App\Http\Controllers\UserController@logout')->name('logout');
 Route::post('/se_connecter', '\App\Http\Controllers\UserController@processLogin')->name('process_login');
 
+
+/*Mutations route*/
+Route::get('/mutation', '\App\Http\Controllers\MutationController@list')->name('mutation.list');
+Route::get('/mutation/form/{id?}', '\App\Http\Controllers\MutationController@form')->name('mutation.form');
+Route::post('/mutation/save', '\App\Http\Controllers\MutationController@save')->name('mutation.save');
+
+
+/*Matchs route*/
+Route::get('/match', '\App\Http\Controllers\MatchController@list')->name('match.list');
+Route::get('/match/form/{id?}', '\App\Http\Controllers\MatchController@form')->name('match.form');
+Route::post('/match/save', '\App\Http\Controllers\MatchController@save')->name('match.save');
+Route::post('/match/delete', '\App\Http\Controllers\MatchController@delete')->name('match.delete');
+
+/*Settings route*/
+Route::get('/settings', '\App\Http\Controllers\SettingsController@main')->name('settings.main');
+Route::post('/settings/scat/delete', '\App\Http\Controllers\SettingsController@deleteScat')->name('settings.delete.scat');
 
 

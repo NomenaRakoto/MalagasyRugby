@@ -30,4 +30,8 @@ class Scat extends Model
     public function sexe() {
         return $this->hasOne(Sexe::class, 'id', 'id_sexe');
     }
+
+    public function type() {
+        return $this->hasOne(Type::class, 'id', 'id_type');
+    }
 }

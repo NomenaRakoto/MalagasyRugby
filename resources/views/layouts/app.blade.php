@@ -8,7 +8,7 @@
           <meta content="" name="keywords">
 
           <!-- Favicons -->
-          <link href="/assets/img/malagasyrugby.png" rel="icon">
+          <link href="/assets/img/malagasyrugby.jpg" rel="icon">
           <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
           <!-- Google Fonts -->
@@ -53,6 +53,7 @@
       <!-- Template Main JS File -->
       <script src="/assets/js/jquery-3.6.3.min.js"></script>
       <script src="/assets/js/main.js"></script>
+
       @stack('scripts')
     </body>
 </html>

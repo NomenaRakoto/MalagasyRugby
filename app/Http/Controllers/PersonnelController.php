@@ -4,15 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Personnel;
+use App\Models\Scat;
 use App\Models\Club;
 use Illuminate\Support\Facades\DB;
 use PDF;
+use Carbon\Carbon;
 
 class PersonnelController extends Controller
 {
     //
 
     const PERSO_IMG_PATH = 'assets\img\app\personnels\\';
+
+    const PERSO_JOUEURS_TYPE = 1;
+
+    const SENIOR_MIN_AGE = 21;
 
     public function __construct(){
         $this->middleware('auth');
@@ -91,6 +97,32 @@ class PersonnelController extends Controller
         
     }
 
+    public function checkScat(Request $request){
+        $scats = $this->getScat($request->date_naissance, $request->sexe, $request->type);
+        if(count($scats) > 0)
+        return view('personnel.scat',['scats'=> $scats])->render();
+
+    }
+
+    private function getScat($date_naissance, $sexe, $type) 
+    {
+        if($type == self::PERSO_JOUEURS_TYPE) {
+            $age = Carbon::parse($date_naissance)->age;
+            $isSenior = $age >= self::SENIOR_MIN_AGE;
+
+            if($isSenior) {
+                $scats = Scat::where("id_type", $type)->whereIn('id_sexe', [0, $sexe])->where('min_age', '<=', $age)->where('max_age', '>=', $age)->get();
+
+            } else {
+                $scats = Scat::where("id_type", $type)->whereIn('id_sexe', [0, $sexe])->where('max_age', '>=', $age)->get();
+            }
+        } else {
+            $scats = Scat::where("id_type", $type)->get();
+        }
+        return $scats;
+
+    }
+
 
      public function print(Request $request){
             $persos = Personnel::whereIn('id', json_decode($request->personnels))->get();
@@ -104,7 +136,6 @@ class PersonnelController extends Controller
     public function form($id = null){
         $clubs =  Club::orderBy('nom')->get();
         $types = $this->getConfigData("type");
-        $scats = $this->getConfigData("scat");
         $sexes = $this->getConfigData("sexe");
         $selections = $this->getConfigData("selection_type");
         $formats_jeu = $this->getConfigData("format_jeu");
@@ -117,7 +148,7 @@ class PersonnelController extends Controller
 
         if($id) {
             $personnel = Personnel::where('id', $id)->first();
-           
+            $scats = $this->getScat($personnel->date_naissance, $personnel->id_sexe, $personnel->id_type);
             return view('personnel.form', 
             [
              'personnel' => $personnel,
@@ -135,6 +166,7 @@ class PersonnelController extends Controller
             ]);
 
         } else {
+            $scats = $this->getConfigData("scat");
             return view('personnel.form', 
             [
              'clubs' => $clubs,

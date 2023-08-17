@@ -32,6 +32,8 @@
               </form>
             </div>
 
+            
+
             <div class="col-md-2 mr-button mr-btn">
               <form method="post" id="formLicence" action="{{route('personnel.licence.print')}}">
                   {{ csrf_field() }}
@@ -124,7 +126,7 @@
 
                 <td>
                   <a href="{{route('personnel.form', ['id' => $personnel->id])}}@if(isset($club))?id_club={{$club->id}}@endif" class="action-btn"><i class="ri-eye-fill"></i></a>
-                  <a data-id="{{$personnel->id}}" href="javascript:" class="action-btn lc-print"><i class="ri-printer-fill"></i></a>
+                  <a href="{{route('mutation.form')}}?id_perso={{$personnel->id}}" class="action-btn lc-print"><i class="ri-arrow-left-right-fill"></i></a>
                 </td>
               </tr>
               @endforeach

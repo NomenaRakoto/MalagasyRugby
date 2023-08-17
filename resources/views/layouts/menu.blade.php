@@ -3,6 +3,13 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
+       <li class="nav-item">
+        <a class="nav-link collapsed" href="{{route('stat')}}">
+          <i class="bi bi-bar-chart-fill"></i>
+          <span>Dashboard / Statistiques</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
       <li class="nav-item">
         <a class="nav-link @if(strpos(\Route::currentRouteName(), 'ligue') === false) collapsed @endif" href="{{route('ligue')}}">
           <i class="bi bi-grid"></i>
@@ -58,28 +65,23 @@
       
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/">
+        <a class="nav-link @if(strpos(\Route::currentRouteName(), 'mutation') === false) collapsed @endif" href="{{route('mutation.list')}}">
           <i class="ri-arrow-left-right-fill"></i>
           <span>Mutations</span>
         </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/">
+        <a class="nav-link @if(strpos(\Route::currentRouteName(), 'match') === false) collapsed @endif" href="{{route('match.list')}}">
           <i class="bx bxs-ball"></i>
           <span>Matchs</span>
         </a>
       </li>
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="{{route('stat')}}">
-          <i class="bi bi-grid"></i>
-          <span>Statistiques</span>
-        </a>
-      </li><!-- End Dashboard Nav -->
+     
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/">
+        <a class="nav-link @if(strpos(\Route::currentRouteName(), 'settings') === false) collapsed @endif" href="{{route('settings.main')}}">
           <i class="bi bi-gear"></i>
           <span>Paramètres</span>
         </a>

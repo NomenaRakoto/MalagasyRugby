@@ -38,7 +38,7 @@
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">Type</label>
                   <div class="col-sm-10">
-                    <select class="form-select" aria-label="Selectionner Type" name='id_type'>
+                    <select class="form-select" id="select-type" aria-label="Selectionner Type" name='id_type'>
                       @foreach($types as $key => $type)
                       <option @if($errors->any()) @if(old('id_type') == $type->id) selected @endif @else @if(isset($personnel) && $type->id==$personnel->id_type) selected @else @if($key==0) selected @endif @endif  @endif value="{{$type->id}}">{{$type->designation}}</option>
                       @endforeach
@@ -65,7 +65,7 @@
                 <div class="row mb-3">
                   <label for="inputDate" class="col-sm-2 col-form-label">Date de naissance</label>
                   <div class="col-sm-10">
-                    <input type="date" name="date_naissance"  @if($errors->any())  value="{{old('date_naissance')}}" @else value="@if(isset($personnel)){{$personnel->date_naissance}}@endif" @endif class="form-control">
+                    <input type="date" id="input-date-naissance" name="date_naissance"  @if($errors->any())  value="{{old('date_naissance')}}" @else value="@if(isset($personnel)){{$personnel->date_naissance}}@endif" @endif class="form-control">
                   </div>
                   @error('nom')
                   <div class="danger inp-error text-danger">{{$message}}</div>
@@ -98,7 +98,7 @@
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">Sexe</label>
                   <div class="col-sm-10">
-                    <select class="form-select" aria-label="Selectionner Sexe" name='id_sexe'>
+                    <select class="form-select" id="select-sexe" aria-label="Selectionner Sexe" name='id_sexe'>
                       @foreach($sexes as $key => $sexe)
                       <option @if($errors->any()) @if(old('id_sexe') == $sexe->id) selected @endif @else @if(isset($personnel) && $sexe->id==$personnel->sexe->id) selected @else @if($key==0) selected @endif @endif  @endif value="{{$sexe->id}}">{{$sexe->designation}}</option>
                       @endforeach
@@ -122,10 +122,8 @@
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">Sous-categorie</label>
                   <div class="col-sm-10">
-                    <select class="form-select" aria-label="Selectionner Categorie" name='id_s_cat'>
-                      @foreach($scats as $key => $categorie)
-                      <option @if($errors->any()) @if(old('id_s_cat') == $categorie->id) selected @endif @else @if(isset($personnel) && $categorie->id==$personnel->id_s_cat) selected @else @if($key==0) selected @endif @endif  @endif value="{{$categorie->id}}">{{$categorie->designation}}</option>
-                      @endforeach
+                    <select id='select-scat' class="form-select" aria-label="Selectionner Categorie" name='id_s_cat'>
+                      @include("personnel.scat")
                     </select>
                   </div>
                 </div>
@@ -229,7 +227,7 @@
                   <div class="col-sm-10">
                     <select class="form-select" aria-label="Type de Sélection" name='selection_id'>
                       @foreach($selections as $key => $selection)
-                      <option @if($errors->any()) @if(old('id_selection') == $selection->id) selected @endif @else @if(isset($personnel) && $selection->id==$personnel->selection->id) selected @else @if($key==0) selected @endif @endif  @endif value="{{$selection->id}}">{{$selection->designation}}</option>
+                      <option @if($errors->any()) @if(old('id_selection') == $selection->id) selected @endif @else @if(isset($personnel) && isset($personnel->selection) && $selection->id==$personnel->selection->id) selected @else @if($key==0) selected @endif @endif  @endif value="{{$selection->id}}">{{$selection->designation}}</option>
                       @endforeach
                     </select>
                   </div>
@@ -330,21 +328,10 @@
 @push("scripts")
 <script src="/assets/js/choices.min.js"></script>
 <script src="/assets/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/js/script.js"></script>
 <script type="text/javascript">
 
-  const sorting = document.querySelector('.selectpicker');
-  const commentSorting = document.querySelector('.selectpicker');
-  const sortingchoices = new Choices(sorting, {
-      placeholder: false,
-      itemSelectText: ''
-  });
-
-
-  // Trick to apply your custom classes to generated dropdown menu
-  let sortingClass = sorting.getAttribute('class');
-  window.onload= function () {
-      sorting.parentElement.setAttribute('class', sortingClass);
-  }
+  
 
   function encodeImageFileBase64(element) {
       var imagebase64 = "";
@@ -375,6 +362,38 @@
           window.open(url, '_blank');
         } 
     });
+
+
+    $('#input-date-naissance').on('change', function(){
+        checkCat($('#input-date-naissance').val(), $('#select-sexe').val(), $('#select-type').val());
+    });
+
+    $('#select-type').on('change', function(){
+        checkCat($('#input-date-naissance').val(), $('#select-sexe').val(), $('#select-type').val());
+    });
+
+    $('#select-sexe').on('change', function(){
+        checkCat($('#input-date-naissance').val(), $('#select-sexe').val(), $('#select-type').val());
+    });
+
+    function checkCat(date_naissance, sexe, type) {
+      $.ajax({
+          headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+          url: "/personnel/scat",
+          type : 'POST',
+          data : {'date_naissance' : date_naissance, 'sexe' : sexe, 'type' : type},
+          success: function (result) {
+              if(result)
+              $('#select-scat').html(result);
+          },
+          error: function (xhr, status, error) {
+              alert(error);
+              //alert('error encountered, please check connection or \n' + error);
+          }
+      });
+    }
   });
 </script>
 @endpush
