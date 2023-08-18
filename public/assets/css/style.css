@@ -1384,3 +1384,8 @@ tr.active
 .ipt-search {
   margin-left: 20px;
 }
+
+.modal-create
+{
+  --bs-modal-width: 700px;
+}

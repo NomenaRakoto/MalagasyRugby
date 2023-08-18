@@ -24,7 +24,7 @@ class UserController extends Controller
  
         if (Auth::attempt($credentials)) {
             // Authentication passed...
-            return redirect()->route('ligue');
+            return redirect()->route('dashboard.main');
         } else {
         	return redirect()->back()->withErrors(['msg' => 'Connexion erroné']);
         }

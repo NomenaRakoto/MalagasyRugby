@@ -4,7 +4,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
        <li class="nav-item">
-        <a class="nav-link collapsed" href="{{route('stat')}}">
+        <a class="nav-link collapsed" href="{{route('dashboard.main')}}">
           <i class="bi bi-bar-chart-fill"></i>
           <span>Dashboard / Statistiques</span>
         </a>

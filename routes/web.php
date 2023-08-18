@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', '\App\Http\Controllers\LigueController@list')->name('ligue');
+Route::get('/ligue', '\App\Http\Controllers\LigueController@list')->name('ligue');
 Route::get('/ligue/form/{id?}', '\App\Http\Controllers\LigueController@form')->name('ligue.form');
 Route::post('/ligue/save', '\App\Http\Controllers\LigueController@save')->name('ligue.save');
 Route::get('/ligue/delete/{id}', '\App\Http\Controllers\LigueController@delete')->name('ligue.delete');
@@ -77,5 +77,11 @@ Route::post('/match/delete', '\App\Http\Controllers\MatchController@delete')->na
 /*Settings route*/
 Route::get('/settings', '\App\Http\Controllers\SettingsController@main')->name('settings.main');
 Route::post('/settings/scat/delete', '\App\Http\Controllers\SettingsController@deleteScat')->name('settings.delete.scat');
+Route::post('/settings/fmr/save', '\App\Http\Controllers\SettingsController@saveFmr')->name('settings.fmr.save');
+
+Route::post('/settings/scat/save', '\App\Http\Controllers\SettingsController@saveScat')->name('settings.scat.save');
+
+/*Settings route*/
+Route::get('/', '\App\Http\Controllers\DashboardController@main')->name('dashboard.main');
 
 
