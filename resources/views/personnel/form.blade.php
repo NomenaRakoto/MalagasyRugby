@@ -389,7 +389,7 @@
               $('#select-scat').html(result);
           },
           error: function (xhr, status, error) {
-              alert(error);
+              console.log(error);
               //alert('error encountered, please check connection or \n' + error);
           }
       });

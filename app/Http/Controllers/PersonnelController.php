@@ -115,6 +115,7 @@ class PersonnelController extends Controller
 
             } else {
                 $scats = Scat::where("id_type", $type)->whereIn('id_sexe', [0, $sexe])->where('max_age', '>=', $age)->get();
+                
             }
         } else {
             $scats = Scat::where("id_type", $type)->get();
