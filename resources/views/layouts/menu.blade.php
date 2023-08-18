@@ -4,7 +4,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
        <li class="nav-item">
-        <a class="nav-link collapsed" href="{{route('dashboard.main')}}">
+        <a class="nav-link @if(strpos(\Route::currentRouteName(), 'dashboard') === false) collapsed @endif" href="{{route('dashboard.main')}}">
           <i class="bi bi-bar-chart-fill"></i>
           <span>Dashboard / Statistiques</span>
         </a>
