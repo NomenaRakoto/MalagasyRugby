@@ -137,6 +137,7 @@
                       <label class="col-sm-2 col-form-label">Sexe</label>
                       <div class="col-sm-10">
                         <select class="form-select" id="select-sexe" aria-label="Selectionner Sexe" name='id_sexe'>
+                          <option value="0"></option>
                           @foreach($sexes as $key => $sexe)
                           <option value="{{$sexe->id}}">{{$sexe->designation}}</option>
                           @endforeach
