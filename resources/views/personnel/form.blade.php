@@ -226,6 +226,7 @@
                   <label class="col-sm-2 col-form-label">Sélection dans l'equipe nationale</label>
                   <div class="col-sm-10">
                     <select class="form-select" aria-label="Type de Sélection" name='selection_id'>
+                      <option value=""></option>
                       @foreach($selections as $key => $selection)
                       <option @if($errors->any()) @if(old('id_selection') == $selection->id) selected @endif @else @if(isset($personnel) && isset($personnel->selection) && $selection->id==$personnel->selection->id) selected @else @if($key==0) selected @endif @endif  @endif value="{{$selection->id}}">{{$selection->designation}}</option>
                       @endforeach
@@ -252,7 +253,7 @@
                   <label for="inputText" class="col-sm-2 col-form-label">Téléphone</label>
                   <div class="col-sm-10">
                     <input type="text" id="telephone" name="telephone" class="form-control  @error('telephone') is-invalid @enderror"
-                    @if($errors->any())  value="{{old('telephone')}}" @else value="@if(isset($personnel)) {{$personnel->telephone}} @endif" @endif  required>
+                    @if($errors->any())  value="{{old('telephone')}}" @else value="@if(isset($personnel)) {{$personnel->telephone}} @endif" @endif>
                     @error('telephone')
                     <div class="danger inp-error text-danger">{{$message}}</div>
                     @enderror

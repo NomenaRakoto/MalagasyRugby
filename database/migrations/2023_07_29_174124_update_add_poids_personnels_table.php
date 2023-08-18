@@ -18,7 +18,7 @@ return new class extends Migration
             $table->double('poids')->nullable();
             $table->integer('carton_rouge')->nullable();
             $table->integer('carton_jaune')->nullable();
-            $table->integer('selection_id');
+            $table->integer('selection_id')->nullable();
             $table->integer('annee_selection')->nullable();
             $table->string('telephone')->nullable();
         });
