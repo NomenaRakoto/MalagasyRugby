@@ -328,11 +328,22 @@
 @push("scripts")
 <script src="/assets/js/choices.min.js"></script>
 <script src="/assets/js/bootstrap.bundle.min.js"></script>
-<script src="/assets/js/script.js"></script>
 <script type="text/javascript">
 
   
+  const sorting = document.querySelector('.selectpicker');
+  const commentSorting = document.querySelector('.selectpicker');
+  const sortingchoices = new Choices(sorting, {
+    placeholder: false,
+    itemSelectText: ''
+  });
 
+
+  // Trick to apply your custom classes to generated dropdown menu
+  let sortingClass = sorting.getAttribute('class');
+  window.onload= function () {
+    sorting.parentElement.setAttribute('class', sortingClass);
+  }
   function encodeImageFileBase64(element) {
       var imagebase64 = "";
       var file = element.files[0];
