@@ -9,7 +9,7 @@ class Jeune extends Model
 {
     use HasFactory;
 
-    protected $table = 'jeunes';
+    protected $table = 'personnel';
     public $timestamps = false;
 
     const JEUNE_CODAGE = 90;
@@ -18,20 +18,20 @@ class Jeune extends Model
         'nom',
         'prenom',
         'date_naissance',
-        'id_association',
+        'id_club',
         'adresse',
         'pere',
         'mere',
         'id_sexe',
-        'id_categorie',
+        'id_cat',
         'id_etude',
-        'photo'
+        'identification'
     ];
 
     protected $primaryKey = 'id';
 
     public function association() {
-        return $this->hasOne(Association::class, 'id', 'id_association');
+        return $this->hasOne(Club::class, 'id', 'id_club');
     }
 
     public function sexe() {
@@ -43,14 +43,14 @@ class Jeune extends Model
     }
 
     public function categorie() {
-        return $this->hasOne(Categorie::class, 'id', 'id_categorie');
+        return $this->hasOne(Categorie::class, 'id', 'id_cat');
     }
 
     public function perso_licence()
     {
         $licence = '';
         if($this->association && $this->association->region) $licence.=$this->association->region->id_ligue;
-        $licence.=$this->id_association;
+        $licence.=$this->id_club;
         $licence.=self::JEUNE_CODAGE;
         $licence.=$this->id;
         return $licence;

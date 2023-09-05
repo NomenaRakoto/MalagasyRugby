@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('contact')->nullable();
             $table->string('responsable')->nullable();
             $table->string('observation')->nullable();
-            $table->unsignedInteger('id_section');
+            $table->unsignedInteger('id_section')->nullable();
             $table->string('adresse')->nullable();
             $table->string('mail_adresse')->nullable();
             $table->string('fb_adresse')->nullable();

@@ -18,7 +18,7 @@
 
     <div class="col-lg-12">
       <div class="card">
-        <div class="card-body">
+        <div class="card-body card-table">
           <div class="row button-cont">
             <div class="col-md-2 mr-button mr-btn">
               <a href="{{route('club.form')}}">

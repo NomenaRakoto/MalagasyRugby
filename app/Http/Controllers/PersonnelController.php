@@ -26,9 +26,9 @@ class PersonnelController extends Controller
 
     public function list(Request $request){
 
-    	$persos = Personnel::paginate(1000); 
-        $male = Personnel::where('id_sexe',2)->count();
-        $female = Personnel::where('id_sexe',1)->count();
+    	$persos = Personnel::whereNotNull('cin')->paginate(1000); 
+        $male = Personnel::where('id_sexe',2)->whereNotNull('cin')->count();
+        $female = Personnel::where('id_sexe',1)->whereNotNull('cin')->count();
     	return view('personnel.list', [
     		"personnels" => $persos,
             "male" => $male,
@@ -46,8 +46,7 @@ class PersonnelController extends Controller
             $queries = $request->session()->get('queries');
         } else {
             if($request->session()->has('queries')) {
-                $queries = $request->session()->get('queries');
-                
+                $queries = $request->session()->get('queries'); 
             }
             
             else {
@@ -59,9 +58,12 @@ class PersonnelController extends Controller
 
        
         if(!empty($queries) ) {
+            $query = str_replace(' ', '',  $queries['query']);
             $persos = new Personnel;
             if(!empty($queries['query'])) {
-                $persos = $persos->where(DB::raw("LOWER(CONCAT(coalesce(nom,''),coalesce(prenom,''),coalesce(cin,''),coalesce(licence,'')))"), 'LIKE', "%".strtolower($queries['query'])."%");
+                
+                $persos = $persos->where(DB::raw("LOWER(CONCAT(coalesce(nom,''),coalesce(prenom,''),coalesce(cin,''),coalesce(licence,'')))"), 'LIKE', "%".strtolower($query)."%");
+
             }
 
 
@@ -69,6 +71,7 @@ class PersonnelController extends Controller
 
                 $persos = $persos->where('annee_validite', '=', trim($queries['saison']));
             }
+
             $persos = $persos->paginate(1000);
             $persos->appends($queries['query']);
             return view('personnel.list', [

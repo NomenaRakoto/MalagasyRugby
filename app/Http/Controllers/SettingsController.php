@@ -103,6 +103,34 @@ class SettingsController extends Controller
         return redirect()->route('settings.main');
     }
 
+    public function deleteCat(Request $request){
+        if(isset($request->cats)) {
+            Categorie::whereIn('id', json_decode($request->cats))->delete();
+        }
+
+        return  redirect()->route('settings.main');
+    }
+
+    public function saveCat(Request $request)
+    {
+        $request->validate([
+            'designation' => 'required'
+        ]);
+
+        $catData = $request->all();
+        unset($catData['_token']);
+       
+        if(!empty($request->id)) {
+            $cat = Categorie::where('id', $request->id)->first();
+            $cat->update($catData);
+        } else {
+
+            Categorie::create($catData);
+        }
+
+        return redirect()->route('settings.main');
+    }
+
     
 
 

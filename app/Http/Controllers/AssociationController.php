@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Association;
+use App\Models\Club;
 use App\Models\Ligue;
+use App\Models\Jeune;
+use App\Models\TypeAssociation;
 
 class AssociationController extends Controller
 {
@@ -13,23 +15,34 @@ class AssociationController extends Controller
     }
     //
     public function list(Request $request){
-    	
-    	$associations = Association::paginate(env('PAGINATION')); 
+    	//Si type == null, C'est un club mais pas association ou etablissement
+    	$associations = Club::whereNotNull('type')->paginate(env('PAGINATION')); 
     	return view('association.list', [
     		"associations" => $associations
     	]);
     }
 
 
+     public function jeunes($id_association){
+
+        $jeunes = Jeune::where('id_club', '=', $id_association)->paginate(env('PAGINATION')); 
+        $association = Club::where('id','=', $id_association)->first();
+        return view('jeune.list', [
+            "jeunes" => $jeunes,
+            "association" => $association
+        ]);
+    }
+
     public function form($id = null){
 
     	$ligues = Ligue::orderBy('nom')->get();
+        $types = TypeAssociation::orderBy('designation')->get();
     	if($id) {
-    		$association = Association::where('id', $id)->first();
-    		return view('association.form', ['association' => $association, 'ligues' => $ligues]);
+    		$association = Club::where('id', $id)->first();
+    		return view('association.form', ['association' => $association, 'ligues' => $ligues, 'types' => $types]);
 
     	} else {
-    		return view('association.form', ['ligues' => $ligues]);
+    		return view('association.form', ['ligues' => $ligues, 'types' => $types]);
     	}
     	
     }
@@ -42,10 +55,10 @@ class AssociationController extends Controller
     	$associationData = $request->all();
     	unset($associationData['_token']);
     	if(isset($request->id)) {
-    		$association = Association::where('id', $request->id)->first();
+    		$association = Club::where('id', $request->id)->first();
     		$association->update($associationData);
     	} else {
-    		Association::create($associationData);
+    		Club::create($associationData);
     	}
     	
     	return redirect()->route('association.list');
@@ -54,7 +67,7 @@ class AssociationController extends Controller
     public function delete($id, Request $request){
 
     	if(isset($id)) {
-    		Association::where('id', $id)->delete();
+    		Club::where('id', $id)->delete();
     		return redirect()->route('association.list');
     	}
     	return redirect()->back();

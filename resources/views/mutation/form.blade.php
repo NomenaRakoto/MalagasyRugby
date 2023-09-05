@@ -54,9 +54,9 @@
 
 
                 <div class="row mb-3">
-                  <label class="col-sm-2 col-form-label">Club Actuel</label>
+                  <label class="col-sm-2 col-form-label">Club/Association Actuel</label>
                   <div class="col-sm-10">
-                    <select class="form-control rounded" aria-label="Selectionner Club" name='id_ancien_club'>
+                    <select disabled="" class="form-control rounded" aria-label="Selectionner Club" name='id_ancien_club'>
                       @if(isset($mutation))
                       <option value="{{$mutation->club_depart->id}}">{{$mutation->club_depart->nom}}</option>
                       @else
@@ -69,7 +69,7 @@
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">Transferer à</label>
                   <div class="col-sm-10">
-                    <select class="selectpicker form-control rounded" aria-label="Selectionner Club" name='id_new_club'>
+                    <select id='selectpicker' class="selectpicker form-control rounded" aria-label="Selectionner Club" name='id_new_club'>
                       @foreach($clubs as $key => $club)
                       <option @if($errors->any()) @if(old('id_new_club') == $club->id) selected @endif @else @if(isset($mutation) && $mutation->club_arrive->id==$club->id) selected  @elseif($key==0) selected @endif  @endif value="{{$club->id}}">{{$club->nom}}</option>
                       @endforeach
@@ -107,5 +107,21 @@
 @push("scripts")
 <script src="/assets/js/choices.min.js"></script>
 <script src="/assets/js/bootstrap.bundle.min.js"></script>
-<script src="/assets/js/script.js"></script>
+<script>
+  
+  const sorting = document.querySelector('#selectpicker');
+  const commentSorting = document.querySelector('#selectpicker');
+  const sortingchoices = new Choices(sorting, {
+    placeholder: false,
+    itemSelectText: ''
+  });
+
+
+  // Trick to apply your custom classes to generated dropdown menu
+  let sortingClass = sorting.getAttribute('class');
+  window.onload= function () {
+    sorting.parentElement.setAttribute('class', sortingClass);
+  }
+
+</script>
 @endpush

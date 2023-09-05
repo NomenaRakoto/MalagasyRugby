@@ -112,7 +112,7 @@
                 {{$personnels->firstItem() + $key }}
                 <input type="checkbox" class="check-select" name="">
                 </th>
-                <td>@if($personnel->type){{$personnel->type->designation}}@endif</td>
+                <td>@if($personnel->type){{$personnel->type->designation}}@elseif(is_null($personnel->cin))  {{"JEUNES"}} @endif</td>
                 <td>{{$personnel->nom}}</td>
                 <td>{{$personnel->prenom}}</td>
                 <td>{{$personnel->date_naissance}}</td>

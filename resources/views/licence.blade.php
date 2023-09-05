@@ -248,7 +248,7 @@
                                         <tr class="bord-bottom">
                                             <td class="bord-right td-img no-top photo-td"  >
                                                     <img class="img-lc" 
-                                                        src="/assets/img/app/jeunes/{{$perso->photo}}"
+                                                        src="/assets/img/app/jeunes/{{$perso->identification}}"
                                                         alt="Title: ImageLicence"
                                                     />
 

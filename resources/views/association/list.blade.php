@@ -47,7 +47,7 @@
               @foreach($associations as $key => $association)
               <tr id="{{$association->id}}">
                 <th scope="row">{{$key+1}}</th>
-                <td>{{$association->type}}</td>
+                <td>{{$association->type_association->designation}}</td>
                 <td>{{$association->nom}}</td>
                 <td>{{$association->responsable}}</td>
                 <td>{{$association->region->nom}}</td>
@@ -58,7 +58,7 @@
                 <td>{{$association->observation}}</td>
                 <td>
                   <a href="{{route('association.form', ['id' => $association->id])}}" class="action-btn"><i class="ri-eye-fill"></i></a>
-                  <a href="{{route('association.form', ['id' => $association->id])}}" class="action-btn"><i class="bi bi-person-circle"></i></a>
+                  <a href="{{route('association.jeunes.list', ['id_association' => $association->id])}}" class="action-btn"><i class="bi bi-person-circle"></i></a>
                 </td>
               </tr>
               @endforeach

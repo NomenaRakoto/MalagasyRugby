@@ -24,7 +24,9 @@ class MatchRugby extends Model
         'commotion_cerebrale',
         'id_club_home',
         'id_club_guest',
-        'terrain'
+        'terrain',
+        'nb_carton_jaune',
+        'nb_carton_rouge'
     ];
 
     protected $primaryKey = 'id';
@@ -37,7 +39,7 @@ class MatchRugby extends Model
         return $this->hasOne(Club::class, 'id', 'id_club_guest');
     }
 
-    public function scat() {
-        return $this->hasOne(Scat::class, 'id', 'id_categorie');
+    public function categorie() {
+        return $this->hasOne(Categorie::class, 'id', 'id_categorie');
     }
 }

@@ -21,12 +21,22 @@ class Club extends Model
         'mail_adresse',
         'fb_adresse',
         'id_section',
-        'actif'
+        'actif',
+        'type',
+        'id_region'
     ];
 
     protected $primaryKey = 'id';
 
     public function section() {
         return $this->hasOne(Section::class, 'id', 'id_section');
+    }
+
+    public function region() {
+        return $this->hasOne(Ligue::class, 'id', 'id_region');
+    }
+
+    public function type_association() {
+        return $this->hasOne(TypeAssociation::class, 'id', 'type');
     }
 }

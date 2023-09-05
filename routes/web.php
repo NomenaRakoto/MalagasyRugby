@@ -36,6 +36,7 @@ Route::get('/association', '\App\Http\Controllers\AssociationController@list')->
 Route::get('/association/form/{id?}', '\App\Http\Controllers\AssociationController@form')->name('association.form');
 Route::post('/association/save', '\App\Http\Controllers\AssociationController@save')->name('association.save');
 Route::get('/association/delete/{id}', '\App\Http\Controllers\AssociationController@delete')->name('association.delete');
+Route::get('/association/jeunes/{id_association}', '\App\Http\Controllers\AssociationController@jeunes')->name('association.jeunes.list');
 
 /*Jeunes*/
 Route::get('/jeune', '\App\Http\Controllers\JeuneController@list')->name('jeune.list');
@@ -73,6 +74,7 @@ Route::get('/match', '\App\Http\Controllers\MatchController@list')->name('match.
 Route::get('/match/form/{id?}', '\App\Http\Controllers\MatchController@form')->name('match.form');
 Route::post('/match/save', '\App\Http\Controllers\MatchController@save')->name('match.save');
 Route::post('/match/delete', '\App\Http\Controllers\MatchController@delete')->name('match.delete');
+Route::post('/match/joueurs', '\App\Http\Controllers\MatchController@joueurs')->name('match.joueurs');
 
 /*Settings route*/
 Route::get('/settings', '\App\Http\Controllers\SettingsController@main')->name('settings.main');
@@ -81,7 +83,10 @@ Route::post('/settings/fmr/save', '\App\Http\Controllers\SettingsController@save
 
 Route::post('/settings/scat/save', '\App\Http\Controllers\SettingsController@saveScat')->name('settings.scat.save');
 
-/*Settings route*/
+Route::post('/settings/cat/save', '\App\Http\Controllers\SettingsController@saveCat')->name('settings.cat.save');
+Route::post('/settings/cat/delete', '\App\Http\Controllers\SettingsController@deleteCat')->name('settings.delete.cat');
+
+/*Dashboard route*/
 Route::get('/', '\App\Http\Controllers\DashboardController@main')->name('dashboard.main');
 
 

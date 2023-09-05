@@ -29,10 +29,10 @@
                 @if(isset($jeune)) <input type="hidden" name="id" value="{{$jeune->id}}"> @endif
                 <div class="row mb-3">
                   <div class="col-sm-2">
-                      <img id="section-logo" @if(isset($jeune)) src="/assets/img/app/jeunes/{{$jeune->photo}}" @else src="/assets/img/app/jeunes/pdp.jpg" @endif class="section-logo" />
+                      <img id="section-logo" @if(isset($jeune)) src="/assets/img/app/jeunes/{{$jeune->identification}}" @else src="/assets/img/app/jeunes/pdp.jpg" @endif class="section-logo" />
                   </div>
                   <div class="col-sm-4">
-                    <input class="form-control" name="photo" type="file" id="photo" onchange="encodeImageFileBase64(this)" accept="image/*">
+                    <input class="form-control" name="identification" type="file" id="photo" onchange="encodeImageFileBase64(this)" accept="image/*">
                   </div>
                 </div>
                 <div class="row mb-3">
@@ -76,7 +76,7 @@
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">Categorie</label>
                   <div class="col-sm-10">
-                    <select class="form-select" aria-label="Selectionner Categorie" name='id_categorie'>
+                    <select class="form-select" aria-label="Selectionner Categorie" name='id_cat'>
                       @foreach($categories as $key => $categorie)
                       <option @if($errors->any()) @if(old('id_categorie') == $categorie->id) selected @endif @else @if(isset($jeune) && $categorie->id==$jeune->categorie->id) selected @else @if($key==0) selected @endif @endif  @endif value="{{$categorie->id}}">{{$categorie->designation}}</option>
                       @endforeach
@@ -87,7 +87,7 @@
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">Association | Etablissement</label>
                   <div class="col-sm-10">
-                    <select class="selectpicker form-control rounded" aria-label="Selectionner Association | Etablissement" name='id_association'>
+                    <select class="selectpicker form-control rounded" aria-label="Selectionner Association | Etablissement" name='id_club'>
                       @foreach($associations as $key => $association)
                       <option @if($errors->any()) @if(old('id_association') == $association->id) selected @endif @else @if(isset($jeune) && $association->id==$jeune->association->id) selected @else @if($key==0) selected @endif @endif  @endif value="{{$association->id}}">{{$association->nom}}</option>
                       @endforeach

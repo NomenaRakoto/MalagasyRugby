@@ -31,9 +31,9 @@
                   <label class="col-sm-2 col-form-label">Type</label>
                   <div class="col-sm-10">
                     <select class="form-select" aria-label="Selectionner Type" name='type'>
-                      
-                      <option @if(isset($association) && $association->type=="Association") selected  @endif value="Association">Association</option>
-                      <option @if(isset($association) && $association->type=='Etablissement') selected  @endif value='Etablissement'>Etablissement</option>
+                      @foreach($types as $key => $type)
+                      <option @if($errors->any()) @if(old('type') == $type->id) selected @endif @else @if(isset($association) && $association->type_association->id==$type->id) selected  @elseif($key==0) selected @endif  @endif value="{{$type->id}}">{{$type->designation}}</option>
+                      @endforeach
                     </select>
                   </div>
                 </div>

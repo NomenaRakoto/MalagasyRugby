@@ -178,7 +178,7 @@
         if($(this).hasClass("active")) {
           $(this).removeClass('active');
           $(this).find(".check-select").prop("checked", false);
-          var index = matchs.indexOf($(this).attr("id"));
+          var index = scats.indexOf($(this).attr("id"));
 
           scats.splice(index, 1);
         } else {

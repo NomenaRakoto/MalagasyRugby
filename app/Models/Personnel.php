@@ -36,8 +36,6 @@ class Personnel extends Model
         'actif',
         'taille',
         'poids',
-        'carton_rouge',
-        'carton_jaune',
         'selection_id',
         'annee_selection',
         'telephone'

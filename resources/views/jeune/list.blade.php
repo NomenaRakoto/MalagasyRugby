@@ -89,7 +89,7 @@
                 <td>{{$jeune->prenom}}</td>
                 <td>{{$jeune->date_naissance}}</td>
                 <td>{{$jeune->association->nom}}</td>
-                <td>{{$jeune->association->type}}</td>
+                <td>{{$jeune->association->type_association->designation}}</td>
                 <td>{{$jeune->adresse}}</td>
                 <td>{{$jeune->sexe->designation}}</td>
                 <td>{{$jeune->categorie->designation}}</td>
@@ -97,7 +97,7 @@
 
                 <td>
                   <a href="{{route('jeune.form', ['id' => $jeune->id])}}" class="action-btn"><i class="ri-eye-fill"></i></a>
-                  <a data-id="{{$jeune->id}}" href="javascript:" class="action-btn lc-print"><i class="ri-printer-fill"></i></a>
+                   <a href="{{route('mutation.form')}}?id_perso={{$jeune->id}}" class="action-btn lc-print"><i class="ri-arrow-left-right-fill"></i></a>
                 </td>
               </tr>
               @endforeach

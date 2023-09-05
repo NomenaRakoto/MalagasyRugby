@@ -206,21 +206,7 @@
                   </div>
                 </div>
 
-                <div class="row mb-3">
-                  <label for="inputText" class="col-sm-2 col-form-label">Carton rouge</label>
-                  <div class="col-sm-10">
-                    <input type="number" name="carton_rouge" class="form-control  @error('carton_rouge') is-invalid @enderror"
-                    @if($errors->any())  value="{{old('carton_rouge')}}" @else value="@if(isset($personnel)){{$personnel->carton_rouge}}@endif" @endif >
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label for="inputText" class="col-sm-2 col-form-label">Carton jaune</label>
-                  <div class="col-sm-10">
-                    <input type="number" name="carton_jaune" class="form-control  @error('carton_jaune') is-invalid @enderror"
-                    @if($errors->any())  value="{{old('carton_jaune')}}" @else value="@if(isset($personnel)){{$personnel->carton_jaune}}@endif" @endif >
-                  </div>
-                </div>
+                
 
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">Sélection dans l'equipe nationale</label>

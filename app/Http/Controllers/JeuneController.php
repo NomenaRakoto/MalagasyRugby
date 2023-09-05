@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Jeune;
-use App\Models\Association;
+use App\Models\Club;
 use App\Models\Sexe;
 use App\Models\Categorie;
 use App\Models\Etude;
@@ -20,7 +20,8 @@ class JeuneController extends Controller
 
     public function list(Request $request){
 
-    	$jeunes = Jeune::paginate(1000); 
+        //jeunes si cin est null. sinon c personnel
+    	$jeunes = Jeune::whereNull('cin')->paginate(1000); 
         $male = Jeune::where('id_sexe',2)->count();
         $female = Jeune::where('id_sexe',1)->count();
     	return view('jeune.list', [
@@ -33,7 +34,7 @@ class JeuneController extends Controller
 
     public function form($id = null){
 
-    	$associations = Association::orderBy('nom')->get();
+    	$associations = Club::whereNotNull('type')->orderBy('nom')->get();
     	$etudes = Etude::orderBy('designation')->get();
     	$categories = Categorie::orderBy('designation')->get();
     	$sexes = Sexe::orderBy('designation')->get();
@@ -66,7 +67,7 @@ class JeuneController extends Controller
     	$request->validate([
     		'nom' => 'required',
     		'date_naissance' => 'required|date',
-            'photo' => 'image'
+            'identification' => 'image'
     	]);
 
     	
@@ -78,19 +79,19 @@ class JeuneController extends Controller
 
         $jeuneData = $request->all();
     	unset($jeuneData['_token']);
-        unset($jeuneData['photo']);
-        if($request->photo) {
-            $imageName = time() . str_replace(' ', '', $request->nom) . '.' . $request->photo->extension();
-            $request->photo->move(public_path(self::JEUNE_IMG_PATH), $imageName);
-            $jeuneData['photo'] = $imageName;
+        unset($jeuneData['identification']);
+        if($request->identification) {
+            $imageName = time() . str_replace(' ', '', $request->nom) . '.' . $request->identification->extension();
+            $request->identification->move(public_path(self::JEUNE_IMG_PATH), $imageName);
+            $jeuneData['identification'] = $imageName;
 
-            if($isUpdate && $jeune->photo != 'pdp.jpg' && !empty($jeune->photo)) {
-                unlink(self::JEUNE_IMG_PATH . $jeune->photo);
+            if($isUpdate && $jeune->identification != 'pdp.jpg' && !empty($jeune->identification)) {
+                unlink(self::JEUNE_IMG_PATH . $jeune->identification);
             }
         } else {
             if(!$isUpdate)
-                $jeuneData['photo'] = 'pdp.jpg';
-            elseif(empty($jeune->photo)) $jeuneData['photo'] = 'pdp.jpg';
+                $jeuneData['identification'] = 'pdp.jpg';
+            elseif(empty($jeune->identification)) $jeuneData['identification'] = 'pdp.jpg';
             
         }
 

@@ -25,5 +25,20 @@ class ConfigSeeder extends Seeder
         	'varname' => 'cin',
         	'value' => '1811'
         ]);
+
+        DB::table('config')->insert([
+            'varname' => 'nom_federation',
+            'value' => 'Malagasy Rugby'
+        ]);
+
+        DB::table('config')->insert([
+            'varname' => 'acronyme_federation',
+            'value' => 'MR'
+        ]);
+
+        DB::table('config')->insert([
+            'varname' => 'saison',
+            'value' => '2023'
+        ]);
     }
 }

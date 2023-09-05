@@ -22,6 +22,18 @@
         </div>
       </div>
       <div class="accordion-item">
+        <h2 class="accordion-header" id="headingCat">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCat" aria-expanded="false" aria-controls="collapseCat">
+          Categories
+        </button>
+        </h2>
+        <div id="collapseCat" class="accordion-collapse collapse" aria-labelledby="headingCat" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          @include('settings.cat')
+        </div>
+        </div>
+      </div>
+      <div class="accordion-item">
           <h2 class="accordion-header" id="headingCat">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSCat" aria-expanded="false" aria-controls="collapseSCat">
               Sous-Categories
@@ -34,18 +46,7 @@
           </div>
       </div>
     </div>
-    <div class="accordion-item">
-      <h2 class="accordion-header" id="headingCat">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCat" aria-expanded="false" aria-controls="collapseCat">
-        Categories
-      </button>
-      </h2>
-      <div id="collapseCat" class="accordion-collapse collapse" aria-labelledby="headingCat" data-bs-parent="#accordionExample">
-      <div class="accordion-body">
-        
-      </div>
-      </div>
-    </div>
+    
 
     <div class="accordion-item">
       <h2 class="accordion-header" id="headingCpte">

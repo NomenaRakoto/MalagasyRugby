@@ -17,8 +17,8 @@ class ClubController extends Controller
     }
     //
     public function list(Request $request){
-
-    	$clubs = Club::paginate(1000); 
+        //Si type == null, C'est un club mais pas association ou etablissement
+    	$clubs = Club::whereNull('type')->paginate(1000); 
     	return view('club.list', [
     		"clubs" => $clubs
     	]);
@@ -36,7 +36,7 @@ class ClubController extends Controller
 
     public function search(Request $request){
         $queries = $request->all();
-        $clubs = Club::where(DB::raw("LOWER(CONCAT(coalesce(nom,''),coalesce(responsable,''),coalesce(contact,''),coalesce(adresse,''),coalesce(observation,''),coalesce(mail_adresse,''),coalesce(fb_adresse,'')))"), 'LIKE', "%".strtolower($queries['query'])."%");
+        $clubs = Club::whereNull('type')->where(DB::raw("LOWER(CONCAT(coalesce(nom,''),coalesce(responsable,''),coalesce(contact,''),coalesce(adresse,''),coalesce(observation,''),coalesce(mail_adresse,''),coalesce(fb_adresse,'')))"), 'LIKE', "%".strtolower($queries['query'])."%");
         $clubs = $clubs->paginate(1000);
         $clubs->appends($queries['query']);
 

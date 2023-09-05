@@ -81,10 +81,12 @@
                 </th>
                 <td>{{$match->date_match}} à {{$match->heure}}</td>
                 <td>{{$match->terrain}}</td>
-                <td>{{$match->scat->designation}}</td>
+                <td>{{$match->categorie->designation}}</td>
                 <td>{{$match->club_home->nom}}<br>VS<br>{{$match->club_guest->nom}}</td>
                 <td>
                   Nb Essai : {{$match->nb_essai}}<br>
+                  Nb Carton Jaune : {{$match->nb_carton_jaune}}<br>
+                  Nb Carton Rouge : {{$match->nb_carton_rouge}}<br>
                   Bonus Offensive : {{$match->bonus_offensive}}<br> 
                   Bonus Defensive : {{$match->bonus_defensive}}<br> 
                 </td>

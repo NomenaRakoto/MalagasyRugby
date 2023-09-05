@@ -51,7 +51,7 @@
         <ul id="personnels-nav" class="nav-content @if(strpos(\Route::currentRouteName(), 'personnel') === false && strpos(\Route::currentRouteName(), 'jeune') === false) collapse @endif " data-bs-parent="#sidebar-nav">
           <li>
             <a href="{{route('personnel.list')}}">
-              <i class="bi bi-circle"></i><span>Personnels MR</span>
+              <i class="bi bi-circle"></i><span>Personnels</span>
             </a>
           </li>
           <li>
