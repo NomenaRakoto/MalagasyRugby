@@ -22,8 +22,8 @@ class JeuneController extends Controller
 
         //jeunes si cin est null. sinon c personnel
     	$jeunes = Jeune::whereNull('cin')->paginate(1000); 
-        $male = Jeune::where('id_sexe',2)->count();
-        $female = Jeune::where('id_sexe',1)->count();
+        $male = Jeune::where('id_sexe',2)->whereNull('cin')->count();
+        $female = Jeune::where('id_sexe',1)->whereNull('cin')->count();
     	return view('jeune.list', [
     		"jeunes" => $jeunes,
             "male" => $male,
