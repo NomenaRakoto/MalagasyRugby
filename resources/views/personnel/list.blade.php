@@ -35,11 +35,9 @@
             
 
             <div class="col-md-2 mr-button mr-btn">
-              <form method="post" id="formLicence" action="{{route('personnel.licence.print')}}">
-                  {{ csrf_field() }}
-                  <input class="licences" type="hidden" name="personnels" value="[]">
-                  <button class="btn btn-primary w-100" type="submit"><i class="ri-file-excel-2-fill"></i> Exporter</button>
-              </form>
+              <a href="{{route('personnel.export')}}">
+                <button class="btn btn-primary w-100" type="submit"><i class="ri-file-excel-2-fill"></i>Exporter</button>
+              </a>
             </div>
 
             <div class="col-md-2 mr-btn">

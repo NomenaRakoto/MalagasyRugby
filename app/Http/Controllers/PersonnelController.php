@@ -9,6 +9,8 @@ use App\Models\Club;
 use Illuminate\Support\Facades\DB;
 use PDF;
 use Carbon\Carbon;
+use App\Exports\PersonnelExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PersonnelController extends Controller
 {
@@ -271,5 +273,11 @@ class PersonnelController extends Controller
             Personnel::whereIn('id', json_decode($request->personnels))->delete();
         }
         return (isset($_GET['current_club'])) ? redirect()->route('club.personnel.list', ['id_club' => $_GET['current_club']]) : redirect()->route('personnel.list');
+    }
+
+
+    public function export()
+    {
+        return Excel::download(new PersonnelExport, "personnel". time() .".xlsx");
     }
 }
