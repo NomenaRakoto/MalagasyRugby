@@ -45,21 +45,41 @@
             </div>
           </div>
       </div>
+
+      <div class="accordion-item">
+          <h2 class="accordion-header" id="headingEtude">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEtude" aria-expanded="false" aria-controls="collapseEtude">
+              Niveau d'Etude
+            </button>
+          </h2>
+          <div id="collapseEtude" class="accordion-collapse collapse" aria-labelledby="headingEtude" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              @include('settings.niveau_etude')
+            </div>
+          </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingCpte">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCpte" aria-expanded="false" aria-controls="collapseTwo">
+          Compte utilisateurs
+        </button>
+        </h2>
+        <div id="collapseCpte" class="accordion-collapse collapse" aria-labelledby="headingCpte" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          
+        </div>
+        </div>
+      </div>
+
+      
     </div>
+
+
+    
     
 
-    <div class="accordion-item">
-      <h2 class="accordion-header" id="headingCpte">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCpte" aria-expanded="false" aria-controls="collapseTwo">
-        Compte utilisateurs
-      </button>
-      </h2>
-      <div id="collapseCpte" class="accordion-collapse collapse" aria-labelledby="headingCpte" data-bs-parent="#accordionExample">
-      <div class="accordion-body">
-        
-      </div>
-      </div>
-    </div>
+    
   </div>
 </section>
 @endsection

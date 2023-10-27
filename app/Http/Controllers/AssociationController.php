@@ -7,6 +7,8 @@ use App\Models\Club;
 use App\Models\Ligue;
 use App\Models\Jeune;
 use App\Models\TypeAssociation;
+use App\Exports\AssociationExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AssociationController extends Controller
 {
@@ -71,5 +73,10 @@ class AssociationController extends Controller
     		return redirect()->route('association.list');
     	}
     	return redirect()->back();
+    }
+
+    public function export()
+    {
+        return Excel::download(new AssociationExport, "association". time() .".xlsx");
     }
 }

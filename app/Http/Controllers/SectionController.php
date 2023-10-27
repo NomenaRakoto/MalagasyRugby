@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Section;
 use App\Models\Ligue;
+use App\Exports\SectionExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SectionController extends Controller
 {
@@ -88,4 +90,8 @@ class SectionController extends Controller
     	return redirect()->back();
     }
 
+    public function export()
+    {
+        return Excel::download(new SectionExport, "section". time() .".xlsx");
+    }
 }

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Mutation;
 use App\Models\Club;
 use App\Models\Personnel;
+use App\Exports\MutationExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MutationController extends Controller
 {
@@ -60,7 +62,10 @@ class MutationController extends Controller
         return redirect()->route('mutation.list');
     }
 
-
+    public function export()
+    {
+        return Excel::download(new MutationExport, "mutation". time() .".xlsx");
+    }
    
 
 }

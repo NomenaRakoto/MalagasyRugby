@@ -8,6 +8,8 @@ use App\Models\Club;
 use App\Models\Sexe;
 use App\Models\Categorie;
 use App\Models\Etude;
+use App\Exports\JeuneExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class JeuneController extends Controller
 {
@@ -118,5 +120,11 @@ class JeuneController extends Controller
     public function print(Request $request){
             $jeunes = Jeune::whereIn('id', json_decode($request->jeunes))->get();
     		return view('licence', ["jeunes" => $jeunes]);
+    }
+
+
+    public function export()
+    {
+        return Excel::download(new JeuneExport, "jeune". time() .".xlsx");
     }
 }

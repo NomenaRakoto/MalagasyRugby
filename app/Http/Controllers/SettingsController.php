@@ -8,6 +8,7 @@ use App\Models\Type;
 use App\Models\Categorie;
 use App\Models\Sexe;
 use App\Models\Config;
+use App\Models\Etude;
 
 class SettingsController extends Controller
 {
@@ -25,6 +26,7 @@ class SettingsController extends Controller
         $types = Type::get(); 
         $cats = Categorie::get(); 
         $sexes = Sexe::get();
+        $niveaux = Etude::get();
 
 
     	return view('settings.main', [
@@ -32,6 +34,7 @@ class SettingsController extends Controller
             'cats' => $cats,
             'types' => $types,
             'sexes' => $sexes,
+            'niveaux' => $niveaux,
             'nom_fmr' => self::getConfig('nom_federation'),
             'acronyme_fmr' => self::getConfig('acronyme_federation'),
             'saison' => self::getConfig('saison')
@@ -126,6 +129,35 @@ class SettingsController extends Controller
         } else {
 
             Categorie::create($catData);
+        }
+
+        return redirect()->route('settings.main');
+    }
+
+
+     public function deleteNiveau(Request $request){
+        if(isset($request->niveaus)) {
+            Etude::whereIn('id', json_decode($request->niveaus))->delete();
+        }
+
+        return  redirect()->route('settings.main');
+    }
+
+    public function saveNiveau(Request $request)
+    {
+        $request->validate([
+            'designation' => 'required'
+        ]);
+
+        $niveauData = $request->all();
+        unset($niveauData['_token']);
+       
+        if(!empty($request->id)) {
+            $cat = Etude::where('id', $request->id)->first();
+            $cat->update($niveauData);
+        } else {
+
+            Etude::create($niveauData);
         }
 
         return redirect()->route('settings.main');

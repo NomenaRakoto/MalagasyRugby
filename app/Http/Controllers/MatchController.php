@@ -10,6 +10,8 @@ use App\Models\Personnel;
 use App\Models\JoueursEssai;
 use App\Models\JoueursCartonJaune;
 use App\Models\JoueursCartonRouge;
+use App\Exports\MatchExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MatchController extends Controller
 {
@@ -137,6 +139,11 @@ class MatchController extends Controller
         $persos = Personnel::whereIn('id_club', [$request->id_club1, $request->id_club2])->get();
         if(count($persos) > 0)
         return view('match.joueurs',['persos'=> $persos])->render();
+    }
+
+    public function export()
+    {
+        return Excel::download(new MatchExport, "match". time() .".xlsx");
     }
 
    

@@ -7,8 +7,9 @@ use App\Models\Club;
 use App\Models\Section;
 use App\Models\Personnel;
 use App\Exports\StatsExport;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
+use App\Exports\ClubExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ClubController extends Controller
 {
@@ -89,5 +90,10 @@ class ClubController extends Controller
     public function stats()
     {
         return Excel::download(new StatsExport, "statistiques". time() .".xlsx");
+    }
+
+    public function export()
+    {
+        return Excel::download(new ClubExport, "club". time() .".xlsx");
     }
 }

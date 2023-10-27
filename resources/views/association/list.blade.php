@@ -24,6 +24,12 @@
                 <button class="btn btn-primary w-100" type="submit"><i class="ri-add-box-fill"></i> Nouveau</button>
               </a>
             </div>
+
+            <div class="col-md-2 mr-button mr-btn">
+              <a href="{{route('association.export')}}">
+                <button class="btn btn-primary w-100" type="submit"><i class="ri-file-excel-2-fill"></i> Exporter</button>
+              </a>
+            </div>
           </div>
 
           <!-- Table with hoverable rows -->

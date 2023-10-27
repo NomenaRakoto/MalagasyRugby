@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Ligue;
+use App\Exports\LigueExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class LigueController extends Controller
 {
@@ -57,6 +59,11 @@ class LigueController extends Controller
     		return redirect()->route('ligue');
     	}
     	return redirect()->back();
+    }
+
+    public function export()
+    {
+        return Excel::download(new LigueExport, "ligue". time() .".xlsx");
     }
 
 }
