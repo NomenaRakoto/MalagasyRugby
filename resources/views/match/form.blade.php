@@ -137,7 +137,7 @@
                       @endforeach
                       @endif
                     </select>
-                    <textarea id="nom_joueurs_carton_jaune" disabled="true" class="form-control textarea" placeholder="" id="floatingTextarea">@if(isset($match)) {{$match->joueurs_essai}} @endif</textarea>
+                    <textarea id="nom_joueurs_carton_jaune" disabled="true" class="form-control textarea" placeholder="" id="floatingTextarea"></textarea>
                     <label for="floatingTextarea">Nom des joueurs ayant reçu carton jaune (Cliquer le bouton pour selectionner)</label>
                 </div>
 
@@ -161,8 +161,32 @@
                       @endforeach
                       @endif
                      </select>
-                    <textarea id="nom_joueurs_carton_rouge" disabled="true" class="form-control textarea" placeholder="Nom des joueurs ayant marqués essai (separes par /)" id="floatingTextarea">@if(isset($match)) {{$match->joueurs_essai}} @endif</textarea>
+                    <textarea id="nom_joueurs_carton_rouge" disabled="true" class="form-control textarea" placeholder="Nom des joueurs ayant marqués essai (separes par /)" id="floatingTextarea"></textarea>
                     <label for="floatingTextarea">Nom des joueurs ayant reçu carton rouge (Cliquer le bouton pour selectionner)</label>
+                </div>
+                <div class="row mb-3">
+                  <label for="inputText" class="col-sm-2 col-form-label">Commotion Cerebrale</label>
+                  <div class="col-sm-10">
+                    <input type="number" id="nb_joueurs_commotion_cerebrale" name="commotion_cerebrale" class="form-control  @error('commotion_cerebrale') is-invalid @enderror" value="@if(isset($match)){{$match->commotion_cerebrale}}@endif">
+                  </div>
+                </div>
+
+                <div class="form-floating mb-3">
+                  <a href="javascript:">
+                    <button data='joueurs_commotion_cerebrale' class="btn btn-primary w-100 btn-pick-joueurs" type="button"><i class="ri-user-add-fill"></i>Selectionner</button>
+                  </a>
+                </div>
+
+                <div class="form-floating mb-3">
+                     <select class="select-joueurs" multiple="" name="joueurs_commotion_cerebrale[]" id='joueurs_commotion_cerebrale'>
+                      @if(isset($persos) && isset($joueursCartonRouge))
+                      @foreach($persos as $key => $joueur)
+                      <option @if(in_array($joueur->id, $joueursCartonRouge)) selected="" @endif value="{{$joueur->id}}">{{$joueur->nom}} {{$joueur->prenom}}</option>
+                      @endforeach
+                      @endif
+                     </select>
+                    <textarea id="nom_joueurs_commotion_cerebrale" placeholder="Nom des joueurs ayant marqués essai (separes par /)" disabled="true" class="form-control textarea" placeholder="" id="floatingTextarea"></textarea>
+                    <label for="floatingTextarea">Nom des joueurs ayant eu une commotion cerebrale durant le match(Cliquer le bouton pour selectionner)</label>
                 </div>
                 
                 <div class="row mb-3">
@@ -186,12 +210,7 @@
                   </div>
                 </div>
 
-                 <div class="row mb-3">
-                  <label for="inputText" class="col-sm-2 col-form-label">Commotion Cerebrale</label>
-                  <div class="col-sm-10">
-                    <input type="number" name="commotion_cerebrale" class="form-control  @error('commotion_cerebrale') is-invalid @enderror" value="@if(isset($match)){{$match->commotion_cerebrale}}@endif">
-                  </div>
-                </div>
+                
                 
                 
                 <div class="row">
@@ -260,33 +279,42 @@
          var $this = $(this);
          if ($this.length) {
           joueurs += $this.text() + "\n";
-          $('#nom_joueurs_essai').val(joueurs);
          }
       });
+      $('#nom_joueurs_essai').val(joueurs);
       var joueurs = '';
       $("#joueurs_carton_jaune option:selected").each(function () {
          var $this = $(this);
          if ($this.length) {
           joueurs += $this.text() + "\n";
-          $('#nom_joueurs_carton_jaune').val(joueurs);
+          
          }
       });
+      $('#nom_joueurs_carton_jaune').val(joueurs);
 
       var joueurs = '';
       $("#joueurs_carton_rouge option:selected").each(function () {
          var $this = $(this);
          if ($this.length) {
           joueurs += $this.text() + "\n";
-          $('#nom_joueurs_carton_rouge').val(joueurs);
+          
          }
       });
+      $('#nom_joueurs_carton_rouge').val(joueurs);
 
+      var joueurs = '';
+      $("#joueurs_commotion_cerebrale option:selected").each(function () {
+         var $this = $(this);
+         if ($this.length) {
+          joueurs += $this.text() + "\n";
+          
+         }
+      });
+      $('#nom_joueurs_commotion_cerebrale').val(joueurs);
 
       $('.btn-pick-joueurs').on('click', function(){
           $('#type').val($(this).attr('data'));
-          getJoueurs($('#selectpickerClub').val(), $('.club2').val(), $('#type').val(), $('#' + $('#type').val()).val()); 
-          
-            
+          getJoueurs($('#selectpickerClub').val(), $('.club2').val(), $('#type').val(), $('#' + $('#type').val()).val());  
       })
 
       $('.club').on('change', function(){

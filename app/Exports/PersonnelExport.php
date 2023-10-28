@@ -1,6 +1,6 @@
 <?php
     namespace App\Exports; 
-    use App\Models\Jeune;
+    use App\Models\Personnel;
     use Maatwebsite\Excel\Concerns\FromCollection; 
     use Maatwebsite\Excel\Concerns\WithHeadings;
     use Illuminate\Support\Facades\DB;
@@ -67,7 +67,8 @@
 
         public function collection() 
         {  
-            return Jeune::whereNotNull('cin')->select('personnel.nom',
+           
+            return Personnel::whereNotNull('cin')->select('personnel.nom',
                                     'personnel.prenom',
                                     'personnel.date_naissance',
                                     'sexe.designation as sexe',
@@ -86,18 +87,18 @@
                                     'ligue.nom as ligue',
                                     'scat.designation as sous_categorie',
                                     'categorie.designation as categorie')
-                                    ->join('club', 'personnel.id_club', 'club.id')
-                                    ->join('section', 'club.id_section', 'section.id')
-                                    ->join('ligue', 'section.id_ligue', 'ligue.id')
-                                    ->join('sexe', 'sexe.id', 'personnel.id_sexe')
-                                    ->join('format_jeu', 'format_jeu.id', 'personnel.id_format_jeu')
-                                    ->join('niveau_equipe', 'niveau_equipe.id', 'personnel.id_niveau_equipe')
-                                    ->join('position_jeu', 'position_jeu.id', 'personnel.id_position_jeu')
-                                    ->join('statut_citoyennete', 'statut_citoyennete.id', 'personnel.id_statut_citoyennete')
-                                    ->join('statut_regle', 'statut_regle.id', 'personnel.id_statut_regle_8')
-                                    ->join('type', 'type.id', 'personnel.id_type')
-                                    ->join('scat', 'scat.id', 'personnel.id_s_cat')
-                                    ->join('categorie', 'categorie.id', 'scat.id')
+                                    ->leftJoin('club', 'personnel.id_club', 'club.id')
+                                    ->leftJoin('section', 'club.id_section', 'section.id')
+                                    ->leftJoin('ligue', 'section.id_ligue', 'ligue.id')
+                                    ->leftJoin('sexe', 'sexe.id', 'personnel.id_sexe')
+                                    ->leftJoin('format_jeu', 'format_jeu.id', 'personnel.id_format_jeu')
+                                    ->leftJoin('niveau_equipe', 'niveau_equipe.id', 'personnel.id_niveau_equipe')
+                                    ->leftJoin('position_jeu', 'position_jeu.id', 'personnel.id_position_jeu')
+                                    ->leftJoin('statut_citoyennete', 'statut_citoyennete.id', 'personnel.id_statut_citoyennete')
+                                    ->leftJoin('statut_regle', 'statut_regle.id', 'personnel.id_statut_regle_8')
+                                    ->leftJoin('type', 'type.id', 'personnel.id_type')
+                                    ->leftJoin('scat', 'scat.id', 'personnel.id_s_cat')
+                                    ->leftJoin('categorie', 'categorie.id', 'scat.id')
                                     ->get(); 
         }
     }

@@ -37,7 +37,7 @@
                             'section.mail_adresse',
                             'section.fb_adresse',
                             'section.observation',
-                            'ligue.nom as Ligue')->join('ligue', 'section.id_ligue', 'ligue.id')->get(); 
+                            'ligue.nom as Ligue')->leftJoin('ligue', 'section.id_ligue', 'ligue.id')->get(); 
         }
     }
 ?>

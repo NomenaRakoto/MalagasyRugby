@@ -53,11 +53,11 @@
                                     'categorie.designation as categorie',
                                     'etude.designation as etude',
                                     'ligue.nom as region')
-                                    ->join('club', 'personnel.id_club', 'club.id')
-                                    ->join('ligue', 'club.id_region', 'ligue.id')
-                                    ->join('sexe', 'sexe.id', 'personnel.id_sexe')
-                                    ->join('categorie', 'categorie.id', 'personnel.id_cat')
-                                    ->join('etude', 'etude.id', 'personnel.id_etude')
+                                    ->leftJoin('club', 'personnel.id_club', 'club.id')
+                                    ->leftJoin('ligue', 'club.id_region', 'ligue.id')
+                                    ->leftJoin('sexe', 'sexe.id', 'personnel.id_sexe')
+                                    ->leftJoin('categorie', 'categorie.id', 'personnel.id_cat')
+                                    ->leftJoin('etude', 'etude.id', 'personnel.id_etude')
                                     ->get(); 
         }
     }

@@ -40,7 +40,7 @@
                                 'club.observation',
                                 'section.nom as section',
                                 'ligue.nom as ligue',
-                                'actif')->join('section', 'club.id_section', 'section.id')->join('ligue', 'section.id_ligue', 'ligue.id')->get(); 
+                                'actif')->leftJoin('section', 'club.id_section', 'section.id')->leftJoin('ligue', 'section.id_ligue', 'ligue.id')->get(); 
         }
     }
 ?>
