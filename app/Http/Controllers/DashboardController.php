@@ -25,10 +25,10 @@ class DashboardController extends Controller
     public function main(Request $request){
     	$data['ligue'] = Ligue::count();
     	$data['section'] = Section::count();
-    	$data['club'] = Club::whereNotNull('type')->count();
+    	$data['club'] = Club::whereNull('type')->count();
     	$data['mutations'] = Mutation::count();
     	$data['matchs'] = MatchRugby::count();
-    	$data['association'] = Club::whereNull('type')->count();
+    	$data['association'] = Club::whereNotNull('type')->count();
     	$data['joueurs'] = Personnel::where('id_type', 1)->count();
     	$data['dirigeants'] = Personnel::where('id_type', 2)->count();
     	$data['educateurs'] = Personnel::where('id_type', 4)->count();
