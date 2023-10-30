@@ -10,6 +10,7 @@ use App\Models\Personnel;
 use App\Models\JoueursEssai;
 use App\Models\JoueursCartonJaune;
 use App\Models\JoueursCartonRouge;
+use App\Models\JoueursCommotionCerebrale;
 use App\Exports\MatchExport;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -40,8 +41,10 @@ class MatchController extends Controller
             $joueursEssai = JoueursEssai::where('id_match', $match->id)->pluck('id_perso')->toArray();
             $joueursCartonJaune = joueursCartonJaune::where('id_match', $match->id)->pluck('id_perso')->toArray();
             $joueursCartonRouge = joueursCartonRouge::where('id_match', $match->id)->pluck('id_perso')->toArray();
+
+            $joueursCommotionCerebrale = JoueursCommotionCerebrale::where('id_match', $match->id)->pluck('id_perso')->toArray();
             
-            return view('match.form', ['clubs' => $clubs,'match' => $match, 'cats' => $cats, 'persos' => $persos, 'joueursEssai' => $joueursEssai, 'joueursCartonJaune' => $joueursCartonJaune, 'joueursCartonRouge' => $joueursCartonRouge]);
+            return view('match.form', ['clubs' => $clubs,'match' => $match, 'cats' => $cats, 'persos' => $persos, 'joueursEssai' => $joueursEssai, 'joueursCartonJaune' => $joueursCartonJaune, 'joueursCartonRouge' => $joueursCartonRouge, 'joueursCommotionCerebrale' => $joueursCommotionCerebrale]);
 
         } else {
             return view('match.form', ['clubs' => $clubs, 'cats' => $cats, 'persos' => $persos  ]);
@@ -79,12 +82,13 @@ class MatchController extends Controller
             $joueurs_carton_rouge = $matchData['joueurs_carton_rouge'];
             unset($matchData['joueurs_carton_rouge']);
         }
+
+         if(isset($matchData['joueurs_commotion_cerebrale'])) {
+            $joueurs_commotion_cerebrale = $matchData['joueurs_commotion_cerebrale'];
+            unset($matchData['joueurs_commotion_cerebrale']);
+        }
         
-        
-        
-        
-        
-        
+      
         
         if($isUpdate) {
             $match->update($matchData);
@@ -112,6 +116,13 @@ class MatchController extends Controller
         if(isset($joueurs_carton_rouge) && intval($matchData['nb_carton_rouge']) > 0) {
             foreach ($joueurs_carton_rouge as $key => $joueur) {
                 JoueursCartonRouge::create(["id_match" =>  $match->id, "id_perso" => $joueur]);
+            } 
+        }
+
+        JoueursCommotionCerebrale::where('id_match', $match->id)->delete();
+        if(isset($joueurs_commotion_cerebrale) && intval($matchData['commotion_cerebrale']) > 0) {
+            foreach ($joueurs_commotion_cerebrale as $key => $joueur) {
+                JoueursCommotionCerebrale::create(["id_match" =>  $match->id, "id_perso" => $joueur]);
             } 
         }
        

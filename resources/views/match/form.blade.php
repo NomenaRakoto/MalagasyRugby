@@ -137,7 +137,7 @@
                       @endforeach
                       @endif
                     </select>
-                    <textarea id="nom_joueurs_carton_jaune" disabled="true" class="form-control textarea" placeholder="" id="floatingTextarea"></textarea>
+                    <textarea id="nom_joueurs_carton_jaune" disabled="true" class="form-control textarea" placeholder="joueurs ayant carton jaune" id="floatingTextarea"></textarea>
                     <label for="floatingTextarea">Nom des joueurs ayant reçu carton jaune (Cliquer le bouton pour selectionner)</label>
                 </div>
 
@@ -179,9 +179,9 @@
 
                 <div class="form-floating mb-3">
                      <select class="select-joueurs" multiple="" name="joueurs_commotion_cerebrale[]" id='joueurs_commotion_cerebrale'>
-                      @if(isset($persos) && isset($joueursCartonRouge))
+                      @if(isset($persos) && isset($joueursCommotionCerebrale))
                       @foreach($persos as $key => $joueur)
-                      <option @if(in_array($joueur->id, $joueursCartonRouge)) selected="" @endif value="{{$joueur->id}}">{{$joueur->nom}} {{$joueur->prenom}}</option>
+                      <option @if(in_array($joueur->id, $joueursCommotionCerebrale)) selected="" @endif value="{{$joueur->id}}">{{$joueur->nom}} {{$joueur->prenom}}</option>
                       @endforeach
                       @endif
                      </select>
