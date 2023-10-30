@@ -74,6 +74,7 @@ class StatsExport implements FromArray
     			"F","M"//Conseiller
     		]
     	];
+        
 
         $clubs = Club::all();
         

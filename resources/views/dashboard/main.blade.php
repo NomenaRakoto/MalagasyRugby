@@ -319,23 +319,19 @@
                             show: false
                           },
                           data: [{
-                              value: 1048,
-                              name: 'U13'
+                              value: "{{$data['u16']}}",
+                              name: "U16"
                             },
                             {
-                              value: 735,
-                              name: 'U15'
+                              value: "{{$data['u18']}}",
+                              name: "U18"
                             },
                             {
-                              value: 580,
-                              name: 'U17'
-                            },
-                            {
-                              value: 484,
+                              value: "{{$data['u20']}}",
                               name: 'U20'
                             },
                             {
-                              value: 300,
+                              value: "{{$data['senior']}}",
                               name: 'Senior'
                             }
                           ]

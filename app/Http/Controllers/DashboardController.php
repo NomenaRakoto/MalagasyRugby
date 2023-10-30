@@ -30,6 +30,12 @@ class DashboardController extends Controller
     	$data['matchs'] = MatchRugby::count();
     	$data['association'] = Club::whereNotNull('type')->count();
     	$data['joueurs'] = Personnel::where('id_type', 1)->count();
+        $data['u16'] = Personnel::where('id_type', 1)->where('id_s_cat', 10)->count();
+        $data['u18'] = Personnel::where('id_type', 1)->where('id_s_cat', 11)->count();
+        $data['u20'] = Personnel::where('id_type', 1)->where('id_s_cat', 4023)->count();
+        $data['senior'] = Personnel::where('personnel.id_type', 1)
+        //->join('scat', 'scat.id', 'id_s_cat')->where('scat.id_cat', 4)->count();
+        ->whereIn('id_s_cat', [6,5,4,8,7,2016,4022,])->count();
     	$data['dirigeants'] = Personnel::where('id_type', 2)->count();
     	$data['educateurs'] = Personnel::where('id_type', 4)->count();
     	$data['arbitres'] = Personnel::where('id_type', 2008)->count();
