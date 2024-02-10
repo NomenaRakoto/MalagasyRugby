@@ -186,22 +186,22 @@ class PersonnelController extends Controller
                 if($perso->club && $perso->club->section && $perso->club->section->ligue) 
                 $templateProcessor->setValue('ligue'.$k, Str::limit($perso->club->section->ligue->nom, 75));
                 if($perso->club && $perso->club->section)
-                $templateProcessor->setValue('section'.$k, $perso->club->section->nom);
+                $templateProcessor->setValue('section'.$k, strtoupper($perso->club->section->nom));
 
                 $templateProcessor->setValue('licence'.$k, $perso->perso_licence());
                 if($perso->club) $templateProcessor->setValue('club'.$k, Str::limit($perso->club->nom, 75));
                 if($perso->scat) $templateProcessor->setValue('sousCat'.$k, $perso->scat->designation);
                 if($perso->format_jeu) $templateProcessor->setValue('format_jeu'.$k, $perso->format_jeu->designation); else $templateProcessor->setValue('format_jeu'.$k, '');
                 if($perso->position_jeu) $templateProcessor->setValue('position_jeu'.$k, $perso->position_jeu->designation); else $templateProcessor->setValue('position_jeu'.$k, '');
-                if($perso->statut_regle) $templateProcessor->setValue('statut_regle'.$k, $perso->statut_regle->designation); else  $templateProcessor->setValue('statut_regle'.$k,'');
-                $templateProcessor->setValue('saison' .$k, 2023);
-                $templateProcessor->setValue('date', date("m/d/Y"));
+                //if($perso->statut_regle) $templateProcessor->setValue('statut_regle'.$k, $perso->statut_regle->designation); else  $templateProcessor->setValue('statut_regle'.$k,'');
+                $templateProcessor->setValue('saison' .$k, saison());
+                $templateProcessor->setValue('date', date("m/d/y"));
 
                 $templateProcessor->setValue('nom'.$k, Str::limit($perso->nom, 75));
                 $templateProcessor->setValue('prenom'.$k, Str::limit($perso->prenom, 75));
                 $templateProcessor->setValue('cin'.$k, Str::limit($perso->cin, 75));
                 $templateProcessor->setValue('naissance'.$k, $perso->date_naissance);
-                $templateProcessor->setValue('passeport'.$k, $perso->passeport);
+                //$templateProcessor->setValue('passeport'.$k, $perso->passeport);
                 $templateProcessor->setValue('type'.$k, $perso->type->designation);
                 $templateProcessor->setValue('sexe'.$k, $perso->sexe->designation);
                 //$templateProcessor->replacePlaceholderImage('sectionLogo' . $k, self::SECTION_IMG_PATH . $perso->club->section->logo);
@@ -213,6 +213,7 @@ class PersonnelController extends Controller
                 if(!file_exists(self::PERSO_IMG_PATH . $perso->identification)) 
                 $perso->identification = 'pdp.jpg';
                 $templateProcessor->setImageValue('joueurImg' . $k, self::PERSO_IMG_PATH . $perso->identification);
+                $templateProcessor->setImageValue('imgfond' . $k, self::PERSO_IMG_PATH . $perso->identification);
                 if($i == 3 || $key==count($persos) - 1) {
                     $i = 0;
                     if($key <4) {
