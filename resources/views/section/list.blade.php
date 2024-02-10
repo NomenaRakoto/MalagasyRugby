@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="pagetitle">
-  <h1>Section <span class="total">{{$sections->total()}}</span></h1>
+  <h1>Section @if(isset($ligue)) de la ligue {{$ligue->nom}} : @endif<span class="total">{{$sections->total()}}</span></h1>
   <nav>
     <ol class="breadcrumb">
       <li class="breadcrumb-item">Section</li>
@@ -25,8 +25,14 @@
               </a>
             </div>
             <div class="col-md-2 mr-button mr-btn">
-              <a href="{{route('section.export')}}">
+              <a href="{{route('section.export')}}@if(isset($ligue))?ligue_id={{$ligue->id}}@endif">
                 <button class="btn btn-primary w-100" type="submit"><i class="ri-file-excel-2-fill"></i> Exporter</button>
+              </a>
+            </div>
+
+            <div class="col-md-2 mr-button mr-btn">
+              <a id='voir_section' @if(count($sections) > 0) href="{{route('section.club', ['id' => $sections[0]->id ])}}" @else href='javasctipt:' @endif>
+                <button class="btn btn-primary w-100" type="submit"><i class="bi bi-grid"></i> Voir Clubs</button>
               </a>
             </div>
           </div>
@@ -51,7 +57,9 @@
             <tbody>
               @foreach($sections as $key => $section)
               <tr id="{{$section->id}}">
-                <th scope="row">{{$sections->lastItem() + $key + 1}}</th>
+                <th scope="row">{{$key + 1}}
+                   <input data-id="{{route('section.club', ['id' => $section->id ])}}" @if($key == 0) checked="" @endif type="checkbox" class="chk-select" name="">
+                </th>
                 <td>
                      <img id="td-section-logo" src="/assets/img/app/section/{{$section->logo}}" class="td-section-logo section-logo" />
                 </td>
@@ -76,4 +84,17 @@
     </div>
   </div>
 </section>
+
+@push('scripts')
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.chk-select').on('click', function(){
+        $('.chk-select').prop('checked', false);
+        $(this).prop('checked', true);
+        $('#voir_section').attr('href', $(this).attr('data-id')); 
+    });
+  });
+</script>
+@endpush
+
 @endsection

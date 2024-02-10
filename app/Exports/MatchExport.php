@@ -50,7 +50,7 @@
 
         public function collection() 
         {  
-            return MatchRugby::select('match.date_match',
+            return MatchRugby::orderBy('date_match', 'desc')->->orderBy('heure', 'desc')->select('match.date_match',
                                     'match.heure',
                                     'categorie.designation as categorie',
                                     'match.nb_essai',

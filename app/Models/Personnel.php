@@ -38,7 +38,8 @@ class Personnel extends Model
         'poids',
         'selection_id',
         'annee_selection',
-        'telephone'
+        'telephone',
+        'nouveau'
     ];
 
     protected $primaryKey = 'id';

@@ -17,6 +17,7 @@ Route::get('/ligue/form/{id?}', '\App\Http\Controllers\LigueController@form')->n
 Route::post('/ligue/save', '\App\Http\Controllers\LigueController@save')->name('ligue.save');
 Route::get('/ligue/delete/{id}', '\App\Http\Controllers\LigueController@delete')->name('ligue.delete');
 Route::get('/ligue/export', '\App\Http\Controllers\LigueController@export')->name('ligue.export');
+Route::get('/ligue/sections/{id}', '\App\Http\Controllers\LigueController@sections')->name('ligue.section');
 
 /*Section route*/
 Route::get('/section', '\App\Http\Controllers\SectionController@list')->name('section.list');
@@ -24,6 +25,7 @@ Route::get('/section/form/{id?}', '\App\Http\Controllers\SectionController@form'
 Route::post('/section/save', '\App\Http\Controllers\SectionController@save')->name('section.save');
 Route::get('/section/delete/{id}', '\App\Http\Controllers\SectionController@delete')->name('section.delete');
 Route::get('/section/export', '\App\Http\Controllers\SectionController@export')->name('section.export');
+Route::get('/section/clubs/{id}', '\App\Http\Controllers\SectionController@clubs')->name('section.club');
 
 /*Club route*/
 Route::get('/club', '\App\Http\Controllers\ClubController@list')->name('club.list');

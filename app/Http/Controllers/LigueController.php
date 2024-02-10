@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Ligue;
+use App\Models\Section;
 use App\Exports\LigueExport;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -64,6 +65,17 @@ class LigueController extends Controller
     public function export()
     {
         return Excel::download(new LigueExport, "ligue". time() .".xlsx");
+    }
+
+    public function sections($id_ligue){
+
+        $sections = Section::where('id_ligue', $id_ligue)->paginate(env('PAGINATION')); 
+        $ligue = Ligue::find($id_ligue);
+        
+        return view('section.list', [
+            "sections" => $sections,
+            'ligue' => $ligue
+        ]);
     }
 
 }

@@ -2,7 +2,8 @@
 
 @section('content')
 <div class="pagetitle">
-  <h1>Clubs <span class="total">{{$clubs->total()}}</span></h1>
+
+  <h1>Clubs @if(isset($section)) {{$section->nom}} : @endif<span class="total">{{$clubs->total()}}</span></h1>
   <nav>
     <ol class="breadcrumb">
       <li class="breadcrumb-item">Clubs </li>
@@ -27,7 +28,7 @@
             </div>
 
             <div class="col-md-2 mr-button mr-btn">
-              <a href="{{route('club.export')}}">
+              <a href="{{route('club.export')}}@if(isset($section))?section_id={{$section->id}}@endif">
                 <button class="btn btn-primary w-100" type="submit"><i class="ri-file-excel-2-fill"></i> Exporter</button>
               </a>
             </div>

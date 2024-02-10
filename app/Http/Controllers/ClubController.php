@@ -92,8 +92,11 @@ class ClubController extends Controller
         return Excel::download(new StatsExport, "statistiques". time() .".xlsx");
     }
 
-    public function export()
+    public function export(Request $request)
     {
+        if($request->section_id) {
+            return Excel::download(new ClubExport($request->section_id), "club". time() .".xlsx");
+        }
         return Excel::download(new ClubExport, "club". time() .".xlsx");
     }
 }

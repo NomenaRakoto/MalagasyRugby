@@ -6,17 +6,25 @@ use Illuminate\Http\Request;
 use App\Models\Personnel;
 use App\Models\Scat;
 use App\Models\Club;
+use App\Classes\CustomTemplateProcessor;
 use Illuminate\Support\Facades\DB;
 use PDF;
 use Carbon\Carbon;
 use App\Exports\PersonnelExport;
 use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpWord\TemplateProcessor;
+use Illuminate\Support\Str;
+
 
 class PersonnelController extends Controller
 {
     //
 
     const PERSO_IMG_PATH = 'assets\img\app\personnels\\';
+
+    const SECTION_IMG_PATH = 'assets\img\app\section\\';
+
+    const LICENCE_TEMPLATE = 'template\\';
 
     const PERSO_JOUEURS_TYPE = 1;
 
@@ -129,13 +137,110 @@ class PersonnelController extends Controller
 
     }
 
+    public function mergeDocx($file1, $file2, $result)
+    {
+        $mainTemplateProcessor = new CustomTemplateProcessor($file1);
+
+        $innerTemplateProcessor = new CustomTemplateProcessor($file2);
+
+        // extract internal xml from template that will be merged inside main template
+        $innerXml = $innerTemplateProcessor->gettempDocumentMainPart();
+
+
+        $innerXml = preg_replace('/^[\s\S]*<w:body>(.*)<\/w:body>.*/', '$1', $innerXml);
+
+        // remove tag containing header, footer, images
+        $innerXml = preg_replace('/<w:sectPr>.*<\/w:sectPr>/', '', $innerXml);
+
+        // inject internal xml inside main template
+        $mainXml = $mainTemplateProcessor->gettempDocumentMainPart();
+        $mainXml = preg_replace('/<\/w:body>/', $innerXml . '</w:body>', $mainXml);
+
+
+        $mainTemplateProcessor->settempDocumentMainPart($mainXml);
+
+        $mainTemplateProcessor->saveAs($result);
+    }
+
 
      public function print(Request $request){
+
             $persos = Personnel::whereIn('id', json_decode($request->personnels))->get();
-            /*$pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->setPaper('a4', 'landscape')->loadView('licence',  ["persos" => $persos]);
-              // download PDF file with download method
-            return $pdf->download('licence.pdf');*/
-    		return view('licence', ["persos" => $persos]);
+
+            $templateProcessor = new TemplateProcessor(public_path(self::LICENCE_TEMPLATE) . 'licence.docx');
+            $i=0;
+            $filename = 'printlicence'. time() .'.docx';
+
+            foreach (glob(public_path(self::LICENCE_TEMPLATE) . "printlicence*.docx") as $fichier) {
+                try{
+                    unlink($fichier);
+                } catch (Exception $e) {
+                    
+                }
+            }
+
+            foreach ($persos as $key => $perso) {
+                if($i == 0) $k = ''; else $k=$i;
+                
+
+                if($perso->club && $perso->club->section && $perso->club->section->ligue) 
+                $templateProcessor->setValue('ligue'.$k, Str::limit($perso->club->section->ligue->nom, 75));
+                if($perso->club && $perso->club->section)
+                $templateProcessor->setValue('section'.$k, $perso->club->section->nom);
+
+                $templateProcessor->setValue('licence'.$k, $perso->perso_licence());
+                if($perso->club) $templateProcessor->setValue('club'.$k, Str::limit($perso->club->nom, 75));
+                if($perso->scat) $templateProcessor->setValue('sousCat'.$k, $perso->scat->designation);
+                if($perso->format_jeu) $templateProcessor->setValue('format_jeu'.$k, $perso->format_jeu->designation); else $templateProcessor->setValue('format_jeu'.$k, '');
+                if($perso->position_jeu) $templateProcessor->setValue('position_jeu'.$k, $perso->position_jeu->designation); else $templateProcessor->setValue('position_jeu'.$k, '');
+                if($perso->statut_regle) $templateProcessor->setValue('statut_regle'.$k, $perso->statut_regle->designation); else  $templateProcessor->setValue('statut_regle'.$k,'');
+                $templateProcessor->setValue('saison' .$k, 2023);
+                $templateProcessor->setValue('date', date("m/d/Y"));
+
+                $templateProcessor->setValue('nom'.$k, Str::limit($perso->nom, 75));
+                $templateProcessor->setValue('prenom'.$k, Str::limit($perso->prenom, 75));
+                $templateProcessor->setValue('cin'.$k, Str::limit($perso->cin, 75));
+                $templateProcessor->setValue('naissance'.$k, $perso->date_naissance);
+                $templateProcessor->setValue('passeport'.$k, $perso->passeport);
+                $templateProcessor->setValue('type'.$k, $perso->type->designation);
+                $templateProcessor->setValue('sexe'.$k, $perso->sexe->designation);
+                //$templateProcessor->replacePlaceholderImage('sectionLogo' . $k, self::SECTION_IMG_PATH . $perso->club->section->logo);
+                if(!file_exists(self::SECTION_IMG_PATH . $perso->club->section->logo)) 
+                $perso->club->section->logo = 'defaultlogosection.jpg';
+
+                $templateProcessor->setImageValue('sectionLogo' . $k, self::SECTION_IMG_PATH . $perso->club->section->logo);
+
+                if(!file_exists(self::PERSO_IMG_PATH . $perso->identification)) 
+                $perso->identification = 'pdp.jpg';
+                $templateProcessor->setImageValue('joueurImg' . $k, self::PERSO_IMG_PATH . $perso->identification);
+                if($i == 3 || $key==count($persos) - 1) {
+                    $i = 0;
+                    if($key <4) {
+                        $templateProcessor->saveAs(public_path(self::LICENCE_TEMPLATE) . $filename);
+                        $templateProcessor = new TemplateProcessor(public_path(self::LICENCE_TEMPLATE) . 'licence.docx');
+                    } else {
+                        $filetemp = public_path(self::LICENCE_TEMPLATE) . 'licencetemp'. time() .'.docx';
+                        $templateProcessor->saveAs($filetemp);
+                        $this->mergeDocx(public_path(self::LICENCE_TEMPLATE) . $filename, $filetemp, public_path(self::LICENCE_TEMPLATE) . $filename);
+                        $templateProcessor = new TemplateProcessor(public_path(self::LICENCE_TEMPLATE) . 'licence.docx');
+                    }
+                    
+                } else {
+                    $i++; 
+                }
+                
+            }
+
+            if(isset($filetemp) && file_exists($filetemp)) {
+                unlink($filetemp);
+            }
+
+            if(file_exists(public_path(self::LICENCE_TEMPLATE) . $filename)) {
+                return redirect()->to(\URL::to('/') . '/template/' . $filename);
+            }
+            
+
+            return redirect()->back();
     	
     }
 
@@ -276,8 +381,11 @@ class PersonnelController extends Controller
     }
 
 
-    public function export()
+    public function export(Request $request)
     {
+        if($request->club_id) {
+            return Excel::download(new PersonnelExport($request->club_id), "personnel". time() .".xlsx");
+        }
         return Excel::download(new PersonnelExport, "personnel". time() .".xlsx");
     }
 }

@@ -22,7 +22,7 @@ class MatchController extends Controller
     }
 
     public function list(Request $request){
-    	$matchs = MatchRugby::paginate(env('PAGINATION')); 
+    	$matchs = MatchRugby::orderBy('date_match', 'desc')->orderBy('heure', 'desc')->paginate(env('PAGINATION')); 
     	return view('match.list', [
     		"matchs" => $matchs
     	]);

@@ -5,6 +5,12 @@
     use Maatwebsite\Excel\Concerns\WithHeadings;
  
     class SectionExport implements FromCollection, WithHeadings { 
+        private $ligue ;
+
+        function __construct($id_ligue = null) {
+            $this->ligue = $id_ligue;
+        }
+
         public function headings(): array {
 
 
@@ -29,15 +35,29 @@
         }
 
         public function collection() 
-        {  
-            return Section::select('section.nom',
+        { 
+            if($this->ligue) {
+                return Section::select('section.nom',
                             'section.contact',
                             'section.president',
                             'section.adresse',
                             'section.mail_adresse',
                             'section.fb_adresse',
                             'section.observation',
-                            'ligue.nom as Ligue')->leftJoin('ligue', 'section.id_ligue', 'ligue.id')->get(); 
+                            'ligue.nom as Ligue')->leftJoin('ligue', 'section.id_ligue', 'ligue.id')
+                            ->where('id_ligue', $this->ligue)
+                            ->get();
+            } else {
+                return Section::select('section.nom',
+                            'section.contact',
+                            'section.president',
+                            'section.adresse',
+                            'section.mail_adresse',
+                            'section.fb_adresse',
+                            'section.observation',
+                            'ligue.nom as Ligue')->leftJoin('ligue', 'section.id_ligue', 'ligue.id')->get();
+            }
+             
         }
     }
 ?>

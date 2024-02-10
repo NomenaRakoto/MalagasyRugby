@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Section;
 use App\Models\Ligue;
+use App\Models\Club;
 use App\Exports\SectionExport;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -90,8 +91,22 @@ class SectionController extends Controller
     	return redirect()->back();
     }
 
-    public function export()
+    public function export(Request $request)
     {
+        if($request->ligue_id) {
+            return Excel::download(new SectionExport($request->ligue_id), "section". time() .".xlsx");
+        }
         return Excel::download(new SectionExport, "section". time() .".xlsx");
+    }
+
+    public function clubs($id_section){
+
+        $clubs = Club::where('id_section', $id_section)->whereNull('type')->paginate(1000); 
+        $section = Section::find($id_section);
+        return view('club.list', [
+            "clubs" => $clubs,
+            'section' => $section
+        ]);
+        
     }
 }

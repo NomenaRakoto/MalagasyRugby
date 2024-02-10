@@ -45,6 +45,19 @@
                     </select>
                   </div>
                 </div>
+
+                <div class="row mb-3">
+                  <label class="col-sm-2 col-form-label">Nouveau</label>
+                  <div class="col-sm-10">
+                    <select class="form-select" id="select-nouveau" aria-label="" name='nouveau'>
+                      
+                      <option @if($errors->any()) @if(old('nouveau') == 1) selected @endif @else @if(isset($personnel) && $personnel->nouveau == 1) selected @else @if($key==0) selected @endif @endif  @endif value="1">Nouveau</option>
+
+                      <option @if($errors->any()) @if(old('nouveau') == 0) selected @endif @else @if(isset($personnel) && $personnel->nouveau == 0) selected @else @if($key==0) selected @endif @endif  @endif value="0">Ancien</option>
+                    </select>
+                  </div>
+                </div>
+
                 <div class="row mb-3">
                   <label for="inputText" class="col-sm-2 col-form-label">Nom</label>
                   <div class="col-sm-10">

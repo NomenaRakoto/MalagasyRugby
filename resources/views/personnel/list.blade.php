@@ -35,7 +35,7 @@
             
 
             <div class="col-md-2 mr-button mr-btn">
-              <a href="{{route('personnel.export')}}">
+              <a href="{{route('personnel.export')}}@if(isset($club))?club_id={{$club->id}}@endif">
                 <button class="btn btn-primary w-100" type="submit"><i class="ri-file-excel-2-fill"></i>Exporter</button>
               </a>
             </div>

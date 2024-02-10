@@ -30,6 +30,14 @@
                 <button class="btn btn-primary w-100" type="submit"><i class="ri-file-excel-2-fill"></i> Exporter</button>
               </a>
             </div>
+
+             <div class="col-md-2 mr-button mr-btn">
+              <a id='voir_section' @if(count($ligues) > 0) href="{{route('ligue.section', ['id' => $ligues[0]->id ])}}" @else href='javasctipt:' @endif>
+                <button class="btn btn-primary w-100" type="submit"><i class="bi bi-grid"></i> Voir Section</button>
+              </a>
+            </div>
+
+           
           </div>
 
           <!-- Table with hoverable rows -->
@@ -52,7 +60,10 @@
             <tbody>
               @foreach($ligues as $key => $ligue)
               <tr id="{{$ligue->id}}">
-                <th scope="row">{{$key+1}}</th>
+                <th scope="row">
+                {{$key+1}}
+                <input data-id="{{route('ligue.section', ['id' => $ligue->id ])}}" @if($key == 0) checked="" @endif type="checkbox" class="chk-select" name="">
+                </th>
                 <td>{{$ligue->nom}}</td>
                 <td>{{$ligue->president}}</td>
                 <td>{{$ligue->vpresident}}</td>
@@ -62,7 +73,8 @@
                 <td>{{$ligue->mail_adresse}}</td>
                 <td>{{$ligue->fb_adresse}}</td>
                 <td>{{$ligue->observation}}</td>
-                <td><a href="{{route('ligue.form', ['id' => $ligue->id])}}" class="action-btn"><i class="ri-eye-fill"></i></a></td>
+                <td><a href="{{route('ligue.form', ['id' => $ligue->id])}}" class="action-btn"><i class="ri-eye-fill"></i></a>
+                </td>
               </tr>
               @endforeach
             </tbody>
@@ -75,4 +87,16 @@
     </div>
   </div>
 </section>
+@push('scripts')
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.chk-select').on('click', function(){
+        $('.chk-select').prop('checked', false);
+        $(this).prop('checked', true);
+        $('#voir_section').attr('href', $(this).attr('data-id')); 
+    });
+  });
+</script>
+@endpush
+
 @endsection

@@ -5,6 +5,12 @@
     use Maatwebsite\Excel\Concerns\WithHeadings;
  
     class ClubExport implements FromCollection, WithHeadings { 
+         private $section ;
+
+        function __construct($id_section = null) {
+            $this->section = $id_section;
+        }
+
         public function headings(): array {
 
 
@@ -30,7 +36,21 @@
         }
 
         public function collection() 
-        {  
+        { 
+
+            if($this->section) {
+                return Club::select('club.nom',
+                                'club.contact',
+                                'club.responsable',
+                                'club.adresse',
+                                'club.mail_adresse',
+                                'club.fb_adresse',
+                                'club.observation',
+                                'section.nom as section',
+                                'ligue.nom as ligue',
+                                'actif')->where('id_section', $this->section)->whereNull('type')->leftJoin('section', 'club.id_section', 'section.id')->leftJoin('ligue', 'section.id_ligue', 'ligue.id')->get(); 
+            }
+
             return Club::select('club.nom',
                                 'club.contact',
                                 'club.responsable',
@@ -40,7 +60,7 @@
                                 'club.observation',
                                 'section.nom as section',
                                 'ligue.nom as ligue',
-                                'actif')->leftJoin('section', 'club.id_section', 'section.id')->leftJoin('ligue', 'section.id_ligue', 'ligue.id')->get(); 
+                                'actif')->whereNull('type')->leftJoin('section', 'club.id_section', 'section.id')->leftJoin('ligue', 'section.id_ligue', 'ligue.id')->get(); 
         }
     }
 ?>
