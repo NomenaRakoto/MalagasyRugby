@@ -167,7 +167,7 @@ class PersonnelController extends Controller
 
             $persos = Personnel::whereIn('id', json_decode($request->personnels))->get();
 
-            $templateProcessor = new TemplateProcessor(public_path(self::LICENCE_TEMPLATE) . 'licence.docx');
+            $templateProcessor = new CustomTemplateProcessor(public_path(self::LICENCE_TEMPLATE) . 'licence.docx');
             $i=0;
             $filename = 'printlicence'. time() .'.docx';
 
@@ -194,15 +194,17 @@ class PersonnelController extends Controller
                 if($perso->format_jeu) $templateProcessor->setValue('format_jeu'.$k, $perso->format_jeu->designation); else $templateProcessor->setValue('format_jeu'.$k, '');
                 if($perso->position_jeu) $templateProcessor->setValue('position_jeu'.$k, $perso->position_jeu->designation); else $templateProcessor->setValue('position_jeu'.$k, '');
                 //if($perso->statut_regle) $templateProcessor->setValue('statut_regle'.$k, $perso->statut_regle->designation); else  $templateProcessor->setValue('statut_regle'.$k,'');
-                $templateProcessor->setValue('saison' .$k, saison());
-                $templateProcessor->setValue('date', date("m/d/y"));
+                $templateProcessor->setValue('saison' . $k , saison());
+                $templateProcessor->setValue('date' . $k, date("d/m/y"));
 
                 $templateProcessor->setValue('nom'.$k, Str::limit($perso->nom, 75));
                 $templateProcessor->setValue('prenom'.$k, Str::limit($perso->prenom, 75));
                 $templateProcessor->setValue('cin'.$k, Str::limit($perso->cin, 75));
                 $templateProcessor->setValue('naissance'.$k, $perso->date_naissance);
                 //$templateProcessor->setValue('passeport'.$k, $perso->passeport);
+                if($perso->type)
                 $templateProcessor->setValue('type'.$k, $perso->type->designation);
+                else $templateProcessor->setValue('type'.$k, '');
                 $templateProcessor->setValue('sexe'.$k, $perso->sexe->designation);
                 //$templateProcessor->replacePlaceholderImage('sectionLogo' . $k, self::SECTION_IMG_PATH . $perso->club->section->logo);
                 if(!file_exists(self::SECTION_IMG_PATH . $perso->club->section->logo)) 
@@ -213,17 +215,17 @@ class PersonnelController extends Controller
                 if(!file_exists(self::PERSO_IMG_PATH . $perso->identification)) 
                 $perso->identification = 'pdp.jpg';
                 $templateProcessor->setImageValue('joueurImg' . $k, self::PERSO_IMG_PATH . $perso->identification);
-                $templateProcessor->setImageValue('imgfond' . $k, self::PERSO_IMG_PATH . $perso->identification);
+                //$templateProcessor->setTransparentImageValue('imgfond' . $k, self::PERSO_IMG_PATH . $perso->identification);
                 if($i == 3 || $key==count($persos) - 1) {
                     $i = 0;
                     if($key <4) {
                         $templateProcessor->saveAs(public_path(self::LICENCE_TEMPLATE) . $filename);
-                        $templateProcessor = new TemplateProcessor(public_path(self::LICENCE_TEMPLATE) . 'licence.docx');
+                        $templateProcessor = new CustomTemplateProcessor(public_path(self::LICENCE_TEMPLATE) . 'licence.docx');
                     } else {
                         $filetemp = public_path(self::LICENCE_TEMPLATE) . 'licencetemp'. time() .'.docx';
                         $templateProcessor->saveAs($filetemp);
                         $this->mergeDocx(public_path(self::LICENCE_TEMPLATE) . $filename, $filetemp, public_path(self::LICENCE_TEMPLATE) . $filename);
-                        $templateProcessor = new TemplateProcessor(public_path(self::LICENCE_TEMPLATE) . 'licence.docx');
+                        $templateProcessor = new CustomTemplateProcessor(public_path(self::LICENCE_TEMPLATE) . 'licence.docx');
                     }
                     
                 } else {
