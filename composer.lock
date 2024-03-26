@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cc545ebd19768a79a9898887c8781ff8",
+    "content-hash": "0c16d0fb4d6cc0b0025f91ef44551eed",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -1605,6 +1605,57 @@
                 }
             ],
             "time": "2021-10-07T12:57:01+00:00"
+        },
+        {
+            "name": "krustnic/docx-merge",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/krustnic/DocxMerge.git",
+                "reference": "4bfcbcce3af57273f246b05f6ace616b5905c665"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/krustnic/DocxMerge/zipball/4bfcbcce3af57273f246b05f6ace616b5905c665",
+                "reference": "4bfcbcce3af57273f246b05f6ace616b5905c665",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.8.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DocxMerge\\": "src/"
+                },
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mityakov Aleksandr",
+                    "email": "avmityakov@gmail.com"
+                }
+            ],
+            "description": "Simple library for merging multiple MS Word \".docx\" files into one",
+            "keywords": [
+                "docx",
+                "merge",
+                "placeholder"
+            ],
+            "support": {
+                "issues": "https://github.com/krustnic/DocxMerge/issues",
+                "source": "https://github.com/krustnic/DocxMerge/tree/master"
+            },
+            "time": "2016-03-18T16:14:18+00:00"
         },
         {
             "name": "laravel/framework",

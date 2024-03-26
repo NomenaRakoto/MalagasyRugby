@@ -14,6 +14,7 @@ use App\Exports\PersonnelExport;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Illuminate\Support\Str;
+use DocxMerge\DocxMerge;
 
 
 class PersonnelController extends Controller
@@ -139,27 +140,32 @@ class PersonnelController extends Controller
 
     public function mergeDocx($file1, $file2, $result)
     {
-        $mainTemplateProcessor = new CustomTemplateProcessor($file1);
+
+       /* $mainTemplateProcessor = new CustomTemplateProcessor($file1);
 
         $innerTemplateProcessor = new CustomTemplateProcessor($file2);
 
-        // extract internal xml from template that will be merged inside main template
-        $innerXml = $innerTemplateProcessor->gettempDocumentMainPart();
+        $innerXml = $innerTemplateProcessor->gettempDocumentMainPart();*/
 
 
-        $innerXml = preg_replace('/^[\s\S]*<w:body>(.*)<\/w:body>.*/', '$1', $innerXml);
+        //$innerXml = preg_replace('/^[\s\S]*<w:body>(.*)<\/w:body>.*/', '$1', $innerXml);
 
-        // remove tag containing header, footer, images
-        $innerXml = preg_replace('/<w:sectPr>.*<\/w:sectPr>/', '', $innerXml);
+        /*$innerXml = preg_replace('/<w:sectPr>.*<\/w:sectPr>/', '', $innerXml);
 
-        // inject internal xml inside main template
+    
         $mainXml = $mainTemplateProcessor->gettempDocumentMainPart();
         $mainXml = preg_replace('/<\/w:body>/', $innerXml . '</w:body>', $mainXml);
 
 
         $mainTemplateProcessor->settempDocumentMainPart($mainXml);
 
-        $mainTemplateProcessor->saveAs($result);
+        $mainTemplateProcessor->saveAs($result);*/
+
+        $dm = new DocxMerge();
+        $dm->merge( [
+            $file1,
+            $file2
+        ],  $result);
     }
 
 
@@ -169,9 +175,28 @@ class PersonnelController extends Controller
 
             $templateProcessor = new CustomTemplateProcessor(public_path(self::LICENCE_TEMPLATE) . 'licence.docx');
             $i=0;
-            $filename = 'printlicence'. time() .'.docx';
 
-            foreach (glob(public_path(self::LICENCE_TEMPLATE) . "printlicence*.docx") as $fichier) {
+
+            $filename = \Auth::id() . 'printlicence'. time() .'.docx';
+            $restemp = null;
+
+            foreach (glob(public_path(self::LICENCE_TEMPLATE) . \Auth::id() . "printlicence*.docx") as $fichier) {
+                try{
+                    unlink($fichier);
+                } catch (Exception $e) {
+                    
+                }
+            }
+
+            foreach (glob(public_path(self::LICENCE_TEMPLATE) . \Auth::id() . "result*.docx") as $fichier) {
+                try{
+                    unlink($fichier);
+                } catch (Exception $e) {
+                    
+                }
+            }
+
+            foreach (glob(public_path(self::LICENCE_TEMPLATE)  . "*.tmp") as $fichier) {
                 try{
                     unlink($fichier);
                 } catch (Exception $e) {
@@ -222,9 +247,14 @@ class PersonnelController extends Controller
                         $templateProcessor->saveAs(public_path(self::LICENCE_TEMPLATE) . $filename);
                         $templateProcessor = new CustomTemplateProcessor(public_path(self::LICENCE_TEMPLATE) . 'licence.docx');
                     } else {
-                        $filetemp = public_path(self::LICENCE_TEMPLATE) . 'licencetemp'. time() .'.docx';
+                        $filetemp = public_path(self::LICENCE_TEMPLATE) . \Auth::id() . 'licencetemp'. time() .'.docx';
+                        if(isset($restemp) && file_exists(public_path(self::LICENCE_TEMPLATE) . $restemp)) {
+                            unlink(public_path(self::LICENCE_TEMPLATE) . $restemp);
+                        }
+                        $restemp = \Auth::id() . 'result' . time() . '.docx';
                         $templateProcessor->saveAs($filetemp);
-                        $this->mergeDocx(public_path(self::LICENCE_TEMPLATE) . $filename, $filetemp, public_path(self::LICENCE_TEMPLATE) . $filename);
+                        $this->mergeDocx(public_path(self::LICENCE_TEMPLATE) . $filename, $filetemp, public_path(self::LICENCE_TEMPLATE) . $restemp);
+                        $filename = $restemp;
                         $templateProcessor = new CustomTemplateProcessor(public_path(self::LICENCE_TEMPLATE) . 'licence.docx');
                     }
                     

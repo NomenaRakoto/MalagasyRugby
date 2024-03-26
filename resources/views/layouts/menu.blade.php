@@ -90,4 +90,9 @@
 
     </ul>
 
+    @if(isset($personnels) && $personnels->total()>0)
+    <div class="menu-img">
+        <img id="img-menu"  src="/assets/img/app/personnels/{{$personnels[0]->identification}}" class="section-logo" />
+    </div>
+    @endif
   </aside><!-- End Sidebar-->

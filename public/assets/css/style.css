@@ -1412,3 +1412,23 @@ th {
 {
   white-space: pre-wrap;
 }
+
+.menu-img
+{
+  text-align: center;
+  padding-top: 60px;
+}
+
+.menu-img img 
+{
+    width: 160px;
+    height: 160px;
+    border: 1px solid #ced4da;
+    border-radius: 3px;
+}
+
+.hide
+{
+  display:none;
+}
+

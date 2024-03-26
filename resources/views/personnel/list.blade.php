@@ -121,6 +121,7 @@
                 <td>{{$personnel->perso_licence()}}</td>
                 <td>{{$personnel->passeport}}</td>
                 <td>{{$personnel->annee_validite}}</td>
+                <td class="hide perso-img">{{\URL::to('/')}}/assets/img/app/personnels/{{$personnel->identification}}</td>
 
                 <td>
                   <a href="{{route('personnel.form', ['id' => $personnel->id])}}@if(isset($club))?id_club={{$club->id}}@endif" class="action-btn"><i class="ri-eye-fill"></i></a>
@@ -174,7 +175,10 @@
           var index = licences.indexOf($(this).attr("id"));
 
           licences.splice(index, 1);
+          $('#img-menu').hide();
         } else {
+          $('#img-menu').attr('src',  $(this).find(".perso-img").text());
+          $('#img-menu').show();
           $(this).addClass('active');
           $(this).find(".check-select").prop("checked", true);
           licences.push($(this).attr("id"));
