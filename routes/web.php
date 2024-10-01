@@ -100,6 +100,11 @@ Route::post('/settings/cat/delete', '\App\Http\Controllers\SettingsController@de
 Route::post('/settings/niveau/save', '\App\Http\Controllers\SettingsController@saveNiveau')->name('settings.niveau_etude.save');
 Route::post('/settings/niveau/delete', '\App\Http\Controllers\SettingsController@deleteNiveau')->name('settings.delete.niveau_etude');
 
+Route::get('/settings/db/save', '\App\Http\Controllers\SettingsController@saveDb')->name('settings.db.save');
+
+Route::post('/settings/user/save', '\App\Http\Controllers\SettingsController@saveUser')->name('settings.user.save');
+Route::post('/settings/user/delete', '\App\Http\Controllers\SettingsController@deleteUser')->name('settings.delete.user');
+
 /*Dashboard route*/
 Route::get('/', '\App\Http\Controllers\DashboardController@main')->name('dashboard.main');
 

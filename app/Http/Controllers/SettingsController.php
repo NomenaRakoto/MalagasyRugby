@@ -9,11 +9,20 @@ use App\Models\Categorie;
 use App\Models\Sexe;
 use App\Models\Config;
 use App\Models\Etude;
+use App\Models\User;
+use ZipArchive;
 
 class SettingsController extends Controller
 {
 
     const LOGO_IMG_PATH = 'assets\img\\';
+    const BACKUP_PATH = 'app\backups\\';
+
+    const PERSO_IMG_PATH = 'assets\img\app\personnels\\';
+
+    const SECTION_IMG_PATH = 'assets\img\app\section\\';
+
+    const JEUNES_IMG_PATH = 'assets\img\app\jeunes\\';
 
     public function __construct(){
         $this->middleware('auth');
@@ -27,6 +36,7 @@ class SettingsController extends Controller
         $cats = Categorie::get(); 
         $sexes = Sexe::get();
         $niveaux = Etude::get();
+        $users = User::get();
 
 
     	return view('settings.main', [
@@ -37,7 +47,8 @@ class SettingsController extends Controller
             'niveaux' => $niveaux,
             'nom_fmr' => self::getConfig('nom_federation'),
             'acronyme_fmr' => self::getConfig('acronyme_federation'),
-            'saison' => self::getConfig('saison')
+            'saison' => self::getConfig('saison'),
+            'users' => $users
     	]);
     }
 
@@ -162,6 +173,141 @@ class SettingsController extends Controller
 
         return redirect()->route('settings.main');
     }
+
+    public function saveDb(Request $request)
+    {
+        foreach (glob(storage_path(self::BACKUP_PATH) . "*.zip") as $fichier) {
+            try{
+                unlink($fichier);
+            } catch (Exception $e) {
+                
+            }
+        }
+
+        $filename = "db_backup-" . time() . ".sql";
+  
+        $command = '"C:\laragon\bin\mysql\mysql-8.0.30-winx64\bin\mysqldump.exe" --user=' . env('DB_USERNAME') ." --password=" . env('DB_PASSWORD') . " --host=" . env('DB_HOST') . " " . env('DB_DATABASE') . " > " . storage_path(self::BACKUP_PATH) . $filename;
+
+        $returnVar = NULL;
+        $output  = NULL;
+  
+        exec($command, $output, $returnVar);
+
+        $zip = new ZipArchive;
+        $zipFileName = 'img-personnels.zip';
+
+        if ($zip->open(storage_path(self::BACKUP_PATH . $zipFileName), ZipArchive::CREATE) === TRUE) {
+            $filesToZip = \File::files(self::PERSO_IMG_PATH);
+
+            foreach ($filesToZip as $file) {
+                $zip->addFile($file, basename($file));
+            }
+
+            $zip->close();
+        } else {
+            return "Failed to create the zip file.";
+        }
+
+        $zip = new ZipArchive;
+        $zipFileName = 'img-section.zip';
+
+        if ($zip->open(storage_path(self::BACKUP_PATH . $zipFileName), ZipArchive::CREATE) === TRUE) {
+            $filesToZip = \File::files(self::SECTION_IMG_PATH);
+
+            foreach ($filesToZip as $file) {
+                $zip->addFile($file, basename($file));
+            }
+
+            $zip->close();
+        } else {
+            return "Failed to create the zip file.";
+        }
+
+        $zip = new ZipArchive;
+        $zipFileName = 'img-jeunes.zip';
+
+        if ($zip->open(storage_path(self::BACKUP_PATH . $zipFileName), ZipArchive::CREATE) === TRUE) {
+            $filesToZip = \File::files(self::JEUNES_IMG_PATH);
+
+            foreach ($filesToZip as $file) {
+                $zip->addFile($file, basename($file));
+            }
+
+            $zip->close();
+        } else {
+            return "Failed to create the zip file.";
+        }
+
+        $zip = new ZipArchive;
+        $zipFileName = 'db_backup.zip';
+
+        if ($zip->open(storage_path(self::BACKUP_PATH . $zipFileName), ZipArchive::CREATE) === TRUE) {
+            $filesToZip = [
+                storage_path(self::BACKUP_PATH . 'img-jeunes.zip'),
+                storage_path(self::BACKUP_PATH . 'img-section.zip'),
+                storage_path(self::BACKUP_PATH . 'img-personnels.zip'),
+                storage_path(self::BACKUP_PATH) . $filename
+            ];
+
+            foreach ($filesToZip as $file) {
+                $zip->addFile($file, basename($file));
+            }
+
+            $zip->close();
+        } else {
+            return "Failed to create the zip file.";
+        }
+
+
+
+        foreach (glob(storage_path(self::BACKUP_PATH) . "db_backup*.sql") as $fichier) {
+            try{
+                unlink($fichier);
+            } catch (Exception $e) {
+                
+            }
+        }
+
+        foreach (glob(storage_path(self::BACKUP_PATH) . "img*.zip") as $fichier) {
+            try{
+                unlink($fichier);
+            } catch (Exception $e) {
+                
+            }
+        }
+
+        return response()->download(storage_path(self::BACKUP_PATH . $zipFileName))->deleteFileAfterSend(true);
+
+    }
+
+     public function deleteUser(Request $request){
+        if(isset($request->users)) {
+            User::whereIn('id', json_decode($request->users))->delete();
+        }
+
+        return  redirect()->route('settings.main');
+    }
+
+    public function saveUser(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|unique:users',
+            'name' => 'required',
+            'password' => 'required'
+        ]);
+
+
+        $userData = $request->all();
+
+        unset($userData['_token']);
+        $userData['password'] = bcrypt($userData['password']);
+       
+        User::create($userData);
+
+        return redirect()->route('settings.main');
+    }
+
+
 
     
 

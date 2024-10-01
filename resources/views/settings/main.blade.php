@@ -21,6 +21,20 @@
         </div>
         </div>
       </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingDB">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDB" aria-expanded="false" aria-controls="collapseDB">
+          Database
+        </button>
+        </h2>
+        <div id="collapseDB" class="accordion-collapse collapse" aria-labelledby="headingDB" data-bs-parent="#accordionDB">
+        <div class="accordion-body">
+            @include('settings.database')
+        </div>
+        </div>
+      </div>
+
       <div class="accordion-item">
         <h2 class="accordion-header" id="headingCat">
         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCat" aria-expanded="false" aria-controls="collapseCat">
@@ -67,7 +81,7 @@
         </h2>
         <div id="collapseCpte" class="accordion-collapse collapse" aria-labelledby="headingCpte" data-bs-parent="#accordionExample">
         <div class="accordion-body">
-          
+           @include('settings.users')
         </div>
         </div>
       </div>

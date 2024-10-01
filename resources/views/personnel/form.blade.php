@@ -266,6 +266,7 @@
 
                 
                 <div class="row">
+                  @if(isAdmin())
                   <div class="col-md-3 mr-button mr-btn">
                         <button class="btn btn-primary w-100" type="submit"><i class="ri-save-2-fill"></i> Enregistrer</button>
                   </div>
@@ -275,7 +276,7 @@
                   </div>
 
                   @endif
-                   
+                  @endif
 
                    <div class="col-md-3 mr-button mr-btn">
                       <a href="@if($current_club){{route('club.personnel.list', ['id_club' => $current_club])}}@else{{route('personnel.list')}}@endif">
@@ -283,10 +284,12 @@
                       </a>
                   </div>
               </form><!-- End General Form Elements -->
+              @if(isAdmin())
               <div class="col-md-3 mr-button mr-btn">
                     <button id="btnDoute" class="btn btn-primary w-100" type="button"><i class="ri-alert-fill"></i> Doute</button>
                   
-                </div>
+              </div>
+              @endif
               @if(isset($personnel))
               <div class="modal fade" id="verticalycentered" tabindex="-1">
                   <div class="modal-dialog modal-dialog-centered">

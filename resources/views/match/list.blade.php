@@ -19,16 +19,13 @@
       <div class="card">
         <div class="card-body">
           <div class="row button-cont">
+            @if(isAdmin())
             <div class="col-md-2 mr-button mr-btn">
               <a href="{{route('match.form')}}">
                 <button class="btn btn-primary w-100" type="submit"><i class="ri-add-box-fill"></i> Nouveau</button>
               </a>
             </div>
-            <div class="col-md-2 mr-button mr-btn">
-              <a href="{{route('match.export')}}">
-                <button class="btn btn-primary w-100" type="submit"><i class="ri-file-excel-2-fill"></i>Exporter</button>
-              </a>
-            </div>
+           
             <div class="col-md-2 mr-btn">
                   <button class="btn btn-danger w-100" type="button" data-bs-toggle="modal" data-bs-target="#verticalycentered"><i class="ri-delete-bin-2-fill"></i> Supprimer</button>
                   <div class="modal fade" id="verticalycentered" tabindex="-1">
@@ -55,6 +52,12 @@
                       </div>
                     </div>
                   </div>
+            </div>
+            @endif
+            <div class="col-md-2 mr-button mr-btn">
+              <a href="{{route('match.export')}}">
+                <button class="btn btn-primary w-100" type="submit"><i class="ri-file-excel-2-fill"></i>Exporter</button>
+              </a>
             </div>
           </div>
 

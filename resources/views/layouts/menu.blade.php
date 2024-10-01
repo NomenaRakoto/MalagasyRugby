@@ -79,14 +79,14 @@
       </li>
 
      
-
+      @if(isAdmin())
       <li class="nav-item">
         <a class="nav-link @if(strpos(\Route::currentRouteName(), 'settings') === false) collapsed @endif" href="{{route('settings.main')}}">
           <i class="bi bi-gear"></i>
           <span>Paramètres</span>
         </a>
       </li><!-- End Dashboard Nav -->
-
+      @endif
 
     </ul>
 

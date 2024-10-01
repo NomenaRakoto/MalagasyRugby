@@ -138,8 +138,9 @@ class PersonnelController extends Controller
 
     }
 
-    public function mergeDocx($file1, $file2, $result)
+    public function mergeDocx($files, $result)
     {
+        
 
        /* $mainTemplateProcessor = new CustomTemplateProcessor($file1);
 
@@ -162,10 +163,7 @@ class PersonnelController extends Controller
         $mainTemplateProcessor->saveAs($result);*/
 
         $dm = new DocxMerge();
-        $dm->merge( [
-            $file1,
-            $file2
-        ],  $result);
+        $dm->merge($files,  $result);
     }
 
 
@@ -181,6 +179,14 @@ class PersonnelController extends Controller
             $restemp = null;
 
             foreach (glob(public_path(self::LICENCE_TEMPLATE) . \Auth::id() . "printlicence*.docx") as $fichier) {
+                try{
+                    unlink($fichier);
+                } catch (Exception $e) {
+                    
+                }
+            }
+
+             foreach (glob(public_path(self::LICENCE_TEMPLATE) . \Auth::id() . "licencetemp*.docx") as $fichier) {
                 try{
                     unlink($fichier);
                 } catch (Exception $e) {
@@ -204,6 +210,8 @@ class PersonnelController extends Controller
                 }
             }
 
+            $files = [];
+
             foreach ($persos as $key => $perso) {
                 if($i == 0) $k = ''; else $k=$i;
                 
@@ -215,11 +223,11 @@ class PersonnelController extends Controller
 
                 $templateProcessor->setValue('licence'.$k, $perso->perso_licence());
                 if($perso->club) $templateProcessor->setValue('club'.$k, Str::limit($perso->club->nom, 75));
-                if($perso->scat) $templateProcessor->setValue('sousCat'.$k, $perso->scat->designation);
+                if($perso->scat) $templateProcessor->setValue('sousCat'.$k, $perso->scat->designation); else $templateProcessor->setValue('sousCat'.$k, '');
                 if($perso->format_jeu) $templateProcessor->setValue('format_jeu'.$k, $perso->format_jeu->designation); else $templateProcessor->setValue('format_jeu'.$k, '');
                 if($perso->position_jeu) $templateProcessor->setValue('position_jeu'.$k, $perso->position_jeu->designation); else $templateProcessor->setValue('position_jeu'.$k, '');
                 //if($perso->statut_regle) $templateProcessor->setValue('statut_regle'.$k, $perso->statut_regle->designation); else  $templateProcessor->setValue('statut_regle'.$k,'');
-                $templateProcessor->setValue('saison' . $k , saison());
+                $templateProcessor->setValue('saison' . $k , $perso->annee_validite);
                 $templateProcessor->setValue('date' . $k, date("d/m/y"));
 
                 $templateProcessor->setValue('nom'.$k, Str::limit($perso->nom, 75));
@@ -246,15 +254,13 @@ class PersonnelController extends Controller
                     if($key <4) {
                         $templateProcessor->saveAs(public_path(self::LICENCE_TEMPLATE) . $filename);
                         $templateProcessor = new CustomTemplateProcessor(public_path(self::LICENCE_TEMPLATE) . 'licence.docx');
+                        $files[] = public_path(self::LICENCE_TEMPLATE) . $filename;
                     } else {
-                        $filetemp = public_path(self::LICENCE_TEMPLATE) . \Auth::id() . 'licencetemp'. time() .'.docx';
-                        if(isset($restemp) && file_exists(public_path(self::LICENCE_TEMPLATE) . $restemp)) {
-                            unlink(public_path(self::LICENCE_TEMPLATE) . $restemp);
-                        }
-                        $restemp = \Auth::id() . 'result' . time() . '.docx';
+                        $filetemp = public_path(self::LICENCE_TEMPLATE) . \Auth::id() . 'licencetemp'. time() . $key . '.docx';
+                        
                         $templateProcessor->saveAs($filetemp);
-                        $this->mergeDocx(public_path(self::LICENCE_TEMPLATE) . $filename, $filetemp, public_path(self::LICENCE_TEMPLATE) . $restemp);
-                        $filename = $restemp;
+                        //$this->mergeDocx(public_path(self::LICENCE_TEMPLATE) . $filename, $filetemp, public_path(self::LICENCE_TEMPLATE) . $restemp);
+                        $files[] = $filetemp;
                         $templateProcessor = new CustomTemplateProcessor(public_path(self::LICENCE_TEMPLATE) . 'licence.docx');
                     }
                     
@@ -264,13 +270,15 @@ class PersonnelController extends Controller
                 
             }
 
-            if(isset($filetemp) && file_exists($filetemp)) {
-                unlink($filetemp);
+            if(count($files) > 1) {
+                $filename =  \Auth::id() . 'result' . time(). '.docx';
+                $this->mergeDocx($files, public_path(self::LICENCE_TEMPLATE) . $filename);
             }
 
             if(file_exists(public_path(self::LICENCE_TEMPLATE) . $filename)) {
                 return redirect()->to(\URL::to('/') . '/template/' . $filename);
             }
+
             
 
             return redirect()->back();

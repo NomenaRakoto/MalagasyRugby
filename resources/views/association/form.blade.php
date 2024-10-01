@@ -103,6 +103,7 @@
                 </div>
                 
                 <div class="row">
+                  @if(isAdmin())
                   <div class="col-md-3 mr-button mr-btn">
                         <button class="btn btn-primary w-100" type="submit"><i class="ri-save-2-fill"></i> Enregistrer</button>
                   </div>
@@ -130,6 +131,7 @@
                       </div>
                     </div>
                   </div>
+                  @endif
                   @endif
 
                    <div class="col-md-3 mr-button mr-btn">

@@ -21,3 +21,10 @@ if(!function_exists('saison')) {
 		return Config::where('varname', 'saison')->first()->value;
 	}
 }
+
+if(!function_exists('isAdmin')) {
+	function isAdmin()
+	{
+		return \Auth::user()->admin;
+	}
+}

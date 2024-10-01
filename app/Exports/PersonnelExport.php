@@ -67,7 +67,10 @@
             'section',
             'ligue',
             'sous_categorie',
-            'categorie'
+            'categorie',
+            'nouveau',
+            'saison'
+
            ];
 
         }
@@ -94,7 +97,9 @@
                                     'section.nom as section',
                                     'ligue.nom as ligue',
                                     'scat.designation as sous_categorie',
-                                    'categorie.designation as categorie')
+                                    'categorie.designation as categorie',
+                                    DB::raw('(CASE WHEN personnel.nouveau = 1 THEN "Oui" ELSE "Non" END) AS nouveau'),
+                                    'annee_validite')
                                     ->leftJoin('club', 'personnel.id_club', 'club.id')
                                     ->leftJoin('section', 'club.id_section', 'section.id')
                                     ->leftJoin('ligue', 'section.id_ligue', 'ligue.id')
@@ -128,7 +133,9 @@
                                     'section.nom as section',
                                     'ligue.nom as ligue',
                                     'scat.designation as sous_categorie',
-                                    'categorie.designation as categorie')
+                                    'categorie.designation as categorie',
+                                    DB::raw('(CASE WHEN personnel.nouveau = 1 THEN "Oui" ELSE "Non" END) AS nouveau'),
+                                    'annee_validite')
                                     ->leftJoin('club', 'personnel.id_club', 'club.id')
                                     ->leftJoin('section', 'club.id_section', 'section.id')
                                     ->leftJoin('ligue', 'section.id_ligue', 'ligue.id')

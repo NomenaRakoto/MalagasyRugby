@@ -19,11 +19,13 @@
       <div class="card">
         <div class="card-body">
           <div class="row button-cont">
+            @if(isAdmin())
             <div class="col-md-2 mr-button mr-btn">
               <a href="{{route('section.form')}}">
                 <button class="btn btn-primary w-100" type="submit"><i class="ri-add-box-fill"></i> Nouveau</button>
               </a>
             </div>
+            @endif
             <div class="col-md-2 mr-button mr-btn">
               <a href="{{route('section.export')}}@if(isset($ligue))?ligue_id={{$ligue->id}}@endif">
                 <button class="btn btn-primary w-100" type="submit"><i class="ri-file-excel-2-fill"></i> Exporter</button>

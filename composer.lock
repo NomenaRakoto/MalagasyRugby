@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0c16d0fb4d6cc0b0025f91ef44551eed",
+    "content-hash": "2f1b5fac3443b39819a770d4c7df4d94",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -219,6 +219,51 @@
                 }
             ],
             "time": "2022-04-01T19:23:25+00:00"
+        },
+        {
+            "name": "cyberwizard/dbsafeguard",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cyberwizard-dev/DBSafeGuard.git",
+                "reference": "7894728e2a4a000d716e245384aeff9c9645b8e4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cyberwizard-dev/DBSafeGuard/zipball/7894728e2a4a000d716e245384aeff9c9645b8e4",
+                "reference": "7894728e2a4a000d716e245384aeff9c9645b8e4",
+                "shasum": ""
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Dbsafeguard\\Providers\\BackupServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Dbsafeguard\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cyberwizard",
+                    "email": "eminibest@gmail.com"
+                }
+            ],
+            "description": "A Laravel package for safeguarding your database with easy-to-use backup commands.",
+            "support": {
+                "issues": "https://github.com/cyberwizard-dev/DBSafeGuard/issues",
+                "source": "https://github.com/cyberwizard-dev/DBSafeGuard/tree/main"
+            },
+            "time": "2024-01-17T09:14:24+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -9526,6 +9571,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "cyberwizard/dbsafeguard": 20,
         "phpoffice/phpword": 20
     },
     "prefer-stable": true,
